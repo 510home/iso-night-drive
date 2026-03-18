@@ -228,8 +228,8 @@
 
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
-  cylSpot.position.set(0, 0.775, 1.2);
-  cylSpot.angle    = 30 * (Math.PI / 180);
+  cylSpot.position.set(0, 0.775, 1);
+  cylSpot.angle    = 35 * (Math.PI / 180);
   cylSpot.penumbra = 0.5;
   cylSpot.decay    = 1.5;
   cylSpot.distance = 8;
@@ -237,7 +237,7 @@
   cylSpot.shadow.mapSize.width = cylSpot.shadow.mapSize.height = 1024;
   cylSpot.shadow.camera.near = 0.1;
   cylSpot.shadow.camera.far  = 10;
-  cylSpot.target.position.set(0, -0.775, 0.5 * Math.tan(45 * Math.PI / 180));
+  cylSpot.target.position.set(0, -0.775, 0.775 * Math.tan(45 * Math.PI / 180));
   cylinder.add(cylSpot);
   cylinder.add(cylSpot.target);
 
