@@ -301,10 +301,10 @@
     // Cylinder X sweep
     const cylT = elapsed % 4;
     cylinder.position.x = cylT < 1
-      ? easeInOut(6, -6, cylT)
+      ? easeInOut(9, -9, cylT)
       : cylT < 3
-        ? 6
-        : easeInOut(6, -6, cylT - 3);
+        ? 9
+        : easeInOut(9, -9, cylT - 3);
 
     controls.update();
     renderer.render(scene, camera);
