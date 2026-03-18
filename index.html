@@ -189,7 +189,7 @@
     new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.4, metalness: 0.55 })
   );
-  cylinder.position.set(4.5, 1.2, -1.28);
+  cylinder.position.set(4.5, 1.5, -1.28);
   cylinder.rotation.x = 5 * (Math.PI / 180);
   cylinder.castShadow = cylinder.receiveShadow = true;
   scene.add(cylinder);
@@ -229,8 +229,8 @@
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
   cylSpot.position.set(0, 0.775, 1);
-  cylSpot.angle    = 20 * (Math.PI / 180);
-  cylSpot.penumbra = 0.3;
+  cylSpot.angle    = 30 * (Math.PI / 180);
+  cylSpot.penumbra = 0.5;
   cylSpot.decay    = 1.5;
   cylSpot.distance = 8;
   cylSpot.castShadow = true;
@@ -295,6 +295,7 @@
     // Patroller X wobble ±2° on top of base -90°
     if (patroller) {
       patroller.rotation.z = -Math.PI / 2 + getWobble((elapsed % 3) / 3);
+      patroller.rotation.x = 60 + getWobble((elapsed % 3) / 3);
     }
 
     // Cylinder X sweep
