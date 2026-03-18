@@ -294,7 +294,7 @@
 
     // Patroller X wobble ±2° on top of base -90°
     if (patroller) {
-      patroller.rotation.x = -Math.PI / 2 + getWobble((elapsed % 3) / 3);
+      patroller.rotation.z = -Math.PI / 2 + getWobble((elapsed % 3) / 3);
     }
 
     // Cylinder X sweep
