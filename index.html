@@ -189,7 +189,7 @@
     new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
   );
-  cylinder.position.set(4.5, 1.115, -1.28);
+  cylinder.position.set(5, 1.115, -1.28);
   cylinder.rotation.x = 5 * (Math.PI / 180);
   cylinder.castShadow = cylinder.receiveShadow = true;
   scene.add(cylinder);
@@ -301,10 +301,10 @@
     // Cylinder X sweep
     const cylT = elapsed % 4;
     cylinder.position.x = cylT < 1
-      ? easeInOut(4.5, -4.5, cylT)
+      ? easeInOut(5, -5, cylT)
       : cylT < 3
         ? 4.5
-        : easeInOut(4.5, -4.5, cylT - 3);
+        : easeInOut(5, -5, cylT - 3);
 
     controls.update();
     renderer.render(scene, camera);
