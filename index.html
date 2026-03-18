@@ -131,11 +131,11 @@
 <div id="hud">
   <div id="title-block">
     <h1>Night Drive</h1>
-    <p>Three.js · WebXR · Orbit</p>
+    <p>Three.js · WebXR · Claude</p>
   </div>
   <div id="bottom-row">
     <div id="stats-panel">
-      Plane &nbsp;&nbsp;<span>5m × 3m</span><br>
+      Plane &nbsp;&nbsp;<span>9m × 3m</span><br>
       Lights &nbsp;<span>2 × Spot + Cylinder</span><br>
       Model &nbsp;<span>Porche-911</span>
     </div>
@@ -168,7 +168,7 @@
 
   /* ── plane ── */
   const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(12, 3),
+    new THREE.PlaneGeometry(9, 3),
     new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
   );
   plane.rotation.x = -Math.PI / 2;
@@ -224,10 +224,10 @@
 
   const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
   spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 9.0, 7, 2.5, 0, 0, .2, -.5);
+  makeSpot(0x8ba9f3, 9.0, 7, 4, 0, 0, .2, -.5);
 
   /* ── cylinder spotlight (parented) ── */
-  const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
+  const cylSpot = new THREE.SpotLight(0xff88ff, 4.0);
   cylSpot.position.set(0, 0.775, 1);
   cylSpot.angle    = 55 * (Math.PI / 180);
   cylSpot.penumbra = 0.75;
