@@ -130,16 +130,16 @@
 
 <div id="hud">
   <div id="title-block">
-    <h1>Scene</h1>
+    <h1>Night Drive</h1>
     <p>Three.js · WebXR · Orbit</p>
   </div>
   <div id="bottom-row">
     <div id="stats-panel">
       Plane &nbsp;&nbsp;<span>5m × 3m</span><br>
       Lights &nbsp;<span>2 × Spot + Cylinder</span><br>
-      Model &nbsp;<span>Flying Patroller</span>
+      Model &nbsp;<span>Porche-911</span>
     </div>
-    <button id="xr-btn">Enter XR</button>
+    <button id="xr-btn">Face Computer</button>
   </div>
 </div>
 
@@ -164,11 +164,11 @@
   /* ── scene ── */
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a0c0f);
-  scene.fog = new THREE.Fog(0x0a0c0f, 12, 22);
+  scene.fog = new THREE.Fog(0x232a3b, 12, 22);
 
   /* ── plane ── */
   const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(5, 3),
+    new THREE.PlaneGeometry(12, 3),
     new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
   );
   plane.rotation.x = -Math.PI / 2;
@@ -176,18 +176,18 @@
   scene.add(plane);
 
   /* ── grid ── */
-  const gridMain = new THREE.GridHelper(5, 5, 0x6b7c3e, 0x3a4a1e);
+  const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
   scene.add(gridMain);
   const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
-  gridZ.position.y = 0.002;
+  gridZ.position.y = 0.003;
   scene.add(gridZ);
 
 
   /* ── cylinder ── */
   const cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.4, metalness: 0.55 })
+    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
   );
   cylinder.position.set(4.5, 1.115, -1.28);
   cylinder.rotation.x = 5 * (Math.PI / 180);
@@ -196,8 +196,8 @@
 
   /* ── cap cube (parented to cylinder) ── */
   const capCube = new THREE.Mesh(
-    new THREE.BoxGeometry(0.3, 0.05, 0.5),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.4, metalness: 0.55 })
+    new THREE.BoxGeometry(0.22, 0.05, 0.5),
+    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
   );
   capCube.position.set(0, 1.275, 0.25);
   capCube.rotation.x = -5 * (Math.PI / 180);
@@ -222,15 +222,15 @@
     return s;
   }
 
-  const spot1 = makeSpot(0xfff4d0, 1,  1, 5,  3, 0, 0, 0);
+  const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
   spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 7.0, 7, 2.5, 0, 0, .2, -.5);
+  makeSpot(0x8ba9f3, 9.0, 7, 2.5, 0, 0, .2, -.5);
 
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
   cylSpot.position.set(0, 0.775, 1);
-  cylSpot.angle    = 35 * (Math.PI / 180);
-  cylSpot.penumbra = 0.5;
+  cylSpot.angle    = 55 * (Math.PI / 180);
+  cylSpot.penumbra = 0.75;
   cylSpot.decay    = 1.5;
   cylSpot.distance = 8;
   cylSpot.castShadow = true;
@@ -245,7 +245,7 @@
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(4, 4, 4);
   camera.lookAt(0, 0, 0);
-
+  
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
@@ -253,7 +253,8 @@
   controls.maxDistance = 20;
   controls.target.set(0, 0.5, 0);
   controls.update();
-
+  
+// Resize automatically
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
