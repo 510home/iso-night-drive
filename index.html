@@ -294,9 +294,8 @@
 
     // Patroller X wobble ±2° on top of base -90°
     if (patroller) {
-      //patroller.rotation.z = -Math.PI / 2; 
-        //+ getWobble((elapsed % 3) / 3);
-      patroller.rotation.z = 12 + getWobble((elapsed % 3) / 3);
+      patroller.rotation.z = -Math.PI / 2 + getWobble((elapsed % 3) / 3);
+   //   patroller.rotation.z = 12 + getWobble((elapsed % 3) / 3);
     }
 
     // Cylinder X sweep
@@ -371,8 +370,8 @@
       );
 
   //  model.rotation.y = 60;
-     model.rotation.x = -90
-    model.rotation.z = 60;
+//     model.rotation.x = -90
+  //  model.rotation.z = 60;
 
       model.traverse(o => {
         if (o.isMesh) {
