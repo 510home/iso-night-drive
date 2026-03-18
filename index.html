@@ -294,7 +294,8 @@
 
     // Patroller X wobble ±2° on top of base -90°
     if (patroller) {
-      //patroller.rotation.z = -Math.PI / 2 + getWobble((elapsed % 3) / 3);
+      patroller.rotation.z = -Math.PI / 2; 
+        //+ getWobble((elapsed % 3) / 3);
       patroller.rotation.x = 60 + getWobble((elapsed % 3) / 3);
     }
 
