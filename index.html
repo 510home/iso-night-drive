@@ -191,7 +191,8 @@
   );
   cylinder.position.set(6, 1.115, -1.28);
   cylinder.rotation.x = 5 * (Math.PI / 180);
-  cylinder.castShadow = cylinder.receiveShadow = true;
+  cylinder.castShadow = false; 
+  cylinder.receiveShadow = true;
   scene.add(cylinder);
 
   /* ── cap cube (parented to cylinder) ── */
@@ -201,7 +202,8 @@
   );
   capCube.position.set(0, 1.275, 0.25);
   capCube.rotation.x = -5 * (Math.PI / 180);
-  capCube.castShadow = capCube.receiveShadow = true;
+  capCube.castShadow = false; 
+  capCube.receiveShadow = true;
   cylinder.add(capCube);
 
   /* ── spotlights ── */
