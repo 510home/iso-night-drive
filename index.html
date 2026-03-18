@@ -192,7 +192,7 @@
   cylinder.position.set(6, 1.115, -1.28);
   cylinder.rotation.x = 5 * (Math.PI / 180);
   cylinder.castShadow = false; 
-  cylinder.receiveShadow = true;
+  cylinder.receiveShadow = false;
   scene.add(cylinder);
 
   /* ── cap cube (parented to cylinder) ── */
@@ -203,7 +203,7 @@
   capCube.position.set(0, 1.275, 0.25);
   capCube.rotation.x = -5 * (Math.PI / 180);
   capCube.castShadow = false; 
-  capCube.receiveShadow = true;
+  capCube.receiveShadow = false;
   cylinder.add(capCube);
 
   /* ── spotlights ── */
@@ -253,7 +253,7 @@
   controls.dampingFactor = 0.08;
   controls.minDistance = 1;
   controls.maxDistance = 20;
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0, 0.5, 0.5);
   controls.update();
   
 // Resize automatically
@@ -343,12 +343,12 @@
 
   /* ── GLTF: flying patroller ── */
   const gltfLoader = new THREE.GLTFLoader();
-
+/*
   // Add Draco decoder support in case the model uses Draco compression
   const dracoLoader = new THREE.DRACOLoader();
   dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
   gltfLoader.setDRACOLoader(dracoLoader);
-
+*/
   gltfLoader.load(
     'https://raw.githubusercontent.com/510home/510home.github.io/master/mgp_porsche_06_maps.glb',
     (gltf) => {
