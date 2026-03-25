@@ -226,7 +226,7 @@
 
   const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
   spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 8, 5, 3, 0, -.5, .125, 0);
+  makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
 
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
@@ -350,7 +350,7 @@
   gltfLoader.setDRACOLoader(dracoLoader);
 */
   gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/basic_car_rotate_z_plus90.glb',
+    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/basic_car_rotate_y_180.glb',
     (gltf) => {
       const model = gltf.scene;
 
