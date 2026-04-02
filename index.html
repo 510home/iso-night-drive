@@ -355,6 +355,7 @@
     'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled.glb',
     (gltf) => {
       const model = gltf.scene;
+      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
 
       // Compute bounding box BEFORE any transforms
       const box    = new THREE.Box3().setFromObject(model);
@@ -373,11 +374,10 @@
         -centre.z * scale -.2
       );
       
-//    model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
-     model.rotation.x = -Math.PI / 2;
+//   model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
+ //    model.rotation.x = -Math.PI / 2;
    // model.rotation.z = Math.PI / 2;
    
-
       model.traverse(o => {
         if (o.isMesh) {
           o.castShadow    = true;
