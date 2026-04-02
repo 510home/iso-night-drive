@@ -266,7 +266,7 @@
   /* ── animation ── */
   const clock  = new THREE.Clock();
   const DEG    = Math.PI / 180;
-  let patroller = null;
+  let lancer = null;
 
   // Wobble keyframes: 0° → +2° → −2° → 0° over 3 seconds
   const KEYS = [
@@ -295,9 +295,9 @@
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
 
-    // Patroller X wobble ±2° on top of base -90°
-    if (patroller) {
-      patroller.rotation.x = 0 + getWobble((elapsed % 3) / 3);
+    // Lancer X wobble ±2° on top of base -90°
+    if (lancer) {
+      lancer.rotation.x = 0 + getWobble((elapsed % 3) / 3);
     }
 
     // Cylinder X sweep
@@ -341,14 +341,16 @@
   xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
   if (!('xr' in navigator)) { xrBtn.disabled = true; }
 
-  /* ── GLTF: Lancer ── */
-  const gltfLoader = new THREE.GLTFLoader();
+
 /*
   // Add Draco decoder support in case the model uses Draco compression
   const dracoLoader = new THREE.DRACOLoader();
   dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
   gltfLoader.setDRACOLoader(dracoLoader);
 */
+
+/* ── GLTF: Lancer ── */
+  const gltfLoader = new THREE.GLTFLoader();
   gltfLoader.load(
     'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled.glb',
     (gltf) => {
@@ -386,8 +388,8 @@
       });
 
       scene.add(model);
-      patroller = model;
-      console.log('Flying patroller loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
+      lancer = model;
+      console.log('Lancer loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
     },
     (xhr) => {
       if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
