@@ -166,132 +166,15 @@
   scene.background = new THREE.Color(0x0a0c0f);
   scene.fog = new THREE.Fog(0x232a3b, 12, 22);
 
-  // ─────────────────────────────────────────────
-//  SHADER — procedural stripe material
-// ─────────────────────────────────────────────
-const vertexShader = /* glsl */`
-  varying vec2 vUv;
-  varying vec3 vNormal;
-  varying vec3 vViewPos;
-
-  void main() {
-    vUv     = uv;
-    vNormal = normalize(normalMatrix * normal);
-    vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-    vViewPos   = -mvPos.xyz;
-    gl_Position = projectionMatrix * mvPos;
-  }
-`;
-
-const fragmentShader = /* glsl */`
-  uniform float uOffset;
-
-  varying vec2  vUv;
-  varying vec3  vNormal;
-  varying vec3  vViewPos;
-
-  const vec3  COLOR_A      = vec3(0.353, 0.337, 0.275);  // #57594f
-  const vec3  COLOR_B      = vec3(0.227, 0.220, 0.216);  // #242931
-  const float STRIPE_COUNT = 1.5;
-
-  // ── Classic 2-D Perlin noise ──────────────────────────────────────────
-  vec2 fade(vec2 t) { return t * t * t * (t * (t * 6.0 - 15.0) + 10.0); }
-
-  float grad(float h, vec2 p) {
-    h = mod(floor(h), 4.0);
-    if (h < 1.0) return  p.x + p.y;
-    if (h < 2.0) return -p.x + p.y;
-    if (h < 3.0) return  p.x - p.y;
-                 return -p.x - p.y;
-  }
-
-  float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-  }
-
-  float perlin(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    vec2 u = fade(f);
-    float a = hash(i + vec2(0.0, 0.0));
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
-    float ga = grad(a * 4.0, f - vec2(0.0, 0.0));
-    float gb = grad(b * 4.0, f - vec2(1.0, 0.0));
-    float gc = grad(c * 4.0, f - vec2(0.0, 1.0));
-    float gd = grad(d * 4.0, f - vec2(1.0, 1.0));
-    return mix(mix(ga, gb, u.x), mix(gc, gd, u.x), u.y);
-  }
-
-  // fBm — two octaves for detail
-  float fbm(vec2 p) {
-    return perlin(p) * 0.6 + perlin(p * 2.1) * 0.4;
-  }
-  // ─────────────────────────────────────────────────────────────────────
-
-  void main() {
-    // ── stripe colour ─────────────────────────────────────────────────
-    float v = fract(vUv.x * STRIPE_COUNT + uOffset);
-    float t = 0.5 + 0.5 * sin(v * 6.2831853);
-    vec3 stripeColor = mix(COLOR_A, COLOR_B, t);
-
-    // ── Perlin roughness — offset in Y at same rate as stripes ────────
-    vec2 noiseUv = vec2(vUv.x * 4.0 + uOffset * STRIPE_COUNT, vUv.y * 4.0);
-    float noise  = fbm(noiseUv);
-    float rough  = clamp(0.55 + noise * 0.5, 0.1, 1.0);
-
-    // ── lighting ──────────────────────────────────────────────────────
-    vec3 N = normalize(vNormal);
-    vec3 V = normalize(vViewPos);
-
-    vec3  L1     = normalize(vec3(-0.55, 0.72, 0.42));
-    float diff1  = max(dot(N, L1), 0.0);
-    vec3  H1     = normalize(L1 + V);
-    float shine1 = mix(128.0, 4.0, rough);
-    float spec1  = pow(max(dot(N, H1), 0.0), shine1) * mix(0.6, 0.05, rough);
-
-    vec3  L2     = normalize(vec3(0.62, 0.60, -0.49));
-    float diff2  = max(dot(N, L2), 0.0) * 0.6;
-    vec3  H2     = normalize(L2 + V);
-    float shine2 = mix(128.0, 4.0, rough);
-    float spec2  = pow(max(dot(N, H2), 0.0), shine2) * mix(0.4, 0.03, rough);
-
-    vec3 lit = stripeColor * (diff1 + diff2) + vec3(spec1 + spec2);
-
-    gl_FragColor = vec4(lit, 1.0);
-  }
-`;
-
-const planeMat = new THREE.ShaderMaterial({
-  vertexShader,
-  fragmentShader,
-  uniforms: {
-    uOffset: { value: 0.0 }
-  },
-  side: THREE.DoubleSide
-});
-
-// ─────────────────────────────────────────────
-//  PLANE  (9 m wide × 3 m deep)
-// ─────────────────────────────────────────────
-const planeGeo = new THREE.PlaneGeometry(9, 3);
-const plane = new THREE.Mesh(planeGeo, planeMat);
-plane.rotation.x = -Math.PI / 2;
-plane.receiveShadow = true;
-scene.add(plane);
-
-
   /* ── plane ── */
-//  const plane = new THREE.Mesh(
-//    new THREE.PlaneGeometry(9, 3),
-//    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(9, 3),
+    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
   );
-//  plane.rotation.x = -Math.PI / 2 ;
-//  plane.receiveShadow = true;
-//  scene.add(plane);
+  plane.rotation.x = -Math.PI / 2 ;
+  plane.receiveShadow = true;
+  scene.add(plane);
 
-  */
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
@@ -323,32 +206,7 @@ scene.add(plane);
   capCube.receiveShadow = false;
   cylinder.add(capCube);
 
-  // ─────────────────────────────────────────────
-//  SPOTLIGHTS  (no ambient — only 2 spots)
-// ─────────────────────────────────────────────
-function makeSpot(color, intensity, posX, posY, posZ, angle, penumbra) {
-  const spot = new THREE.SpotLight(color, intensity);
-  spot.position.set(posX, posY, posZ);
-  spot.angle    = angle;
-  spot.penumbra = penumbra;
-  spot.decay    = 1.8;
-  spot.distance = 20;
-  spot.castShadow = true;
-  spot.shadow.mapSize.set(1024, 1024);
-  spot.shadow.camera.near = 0.5;
-  spot.shadow.camera.far  = 20;
-  spot.target.position.set(0, 0, 0);
-  scene.add(spot);
-  scene.add(spot.target);
-  return spot;
-}
-
-const spot1 = makeSpot(0xffeedd, 3.5, -3, 5,   3.5, Math.PI / 7, 0.35);
-const spot2 = makeSpot(0xaaddff, 2.5,  4, 4.5, -3,  Math.PI / 8, 0.45);
-
-
-/*  
-  // ── spotlights ── 
+  /* ── spotlights ── */
   function makeSpot(color, intensity, x, y, z, tx, ty, tz) {
     const s = new THREE.SpotLight(color, intensity);
     s.position.set(x, y, z);
@@ -369,8 +227,7 @@ const spot2 = makeSpot(0xaaddff, 2.5,  4, 4.5, -3,  Math.PI / 8, 0.45);
   const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
   spot1.castShadow = false;
   makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
--->
-  */
+
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
   cylSpot.position.set(0, 0.775, 1);
@@ -451,9 +308,6 @@ const spot2 = makeSpot(0xaaddff, 2.5,  4, 4.5, -3,  Math.PI / 8, 0.45);
         ? 9
         : easeInOut(9, -9, cylT - 3);
 
- const yOffset = (t * 4.0) % 1.0;
-  planeMat.uniforms.uOffset.value = yOffset;
-    
     controls.update();
     renderer.render(scene, camera);
   }
