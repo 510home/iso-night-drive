@@ -273,7 +273,7 @@ const planeMat = new THREE.ShaderMaterial({
 });
 
 // ─────────────────────────────────────────────
-//  PLANE  (5 m wide × 8 m deep)
+//  PLANE  (9 m wide × 3 m deep)
 // ─────────────────────────────────────────────
 const planeGeo = new THREE.PlaneGeometry(9, 3);
 const plane = new THREE.Mesh(planeGeo, planeMat);
@@ -281,16 +281,17 @@ plane.rotation.x = -Math.PI / 2;
 plane.receiveShadow = true;
 scene.add(plane);
 
-<!--
+
   /* ── plane ── */
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(9, 3),
-    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
+//  const plane = new THREE.Mesh(
+//    new THREE.PlaneGeometry(9, 3),
+//    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
   );
-  plane.rotation.x = -Math.PI / 2 ;
-  plane.receiveShadow = true;
-  scene.add(plane);
--->
+//  plane.rotation.x = -Math.PI / 2 ;
+//  plane.receiveShadow = true;
+//  scene.add(plane);
+
+  */
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
