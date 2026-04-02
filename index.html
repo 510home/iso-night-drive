@@ -424,6 +424,9 @@ scene.add(plane);
         ? 9
         : easeInOut(9, -9, cylT - 3);
 
+ const yOffset = (t * 4.0) % 1.0;
+  planeMat.uniforms.uOffset.value = yOffset;
+    
     controls.update();
     renderer.render(scene, camera);
   }
