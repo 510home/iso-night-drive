@@ -162,9 +162,9 @@
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
   /* ── scene ── */
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a0c0f);
-  scene.fog = new THREE.Fog(0x232a3b, 12, 22);
+  const carbodyscene = new THREE.Scene();
+  carbodyscene.background = new THREE.Color(0x0a0c0f);
+  carbodyscene.fog = new THREE.Fog(0x232a3b, 12, 22);
 
   /* ── plane ── */
   const plane = new THREE.Mesh(
@@ -173,15 +173,15 @@
   );
   plane.rotation.x = -Math.PI / 2 ;
   plane.receiveShadow = true;
-  scene.add(plane);
+  carbodyscene.add(plane);
 
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
-  scene.add(gridMain);
+  carbodyscene.add(gridMain);
   const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
   gridZ.position.y = 0.003;
-  scene.add(gridZ);
+  carbodyscene.add(gridZ);
 
 
   /* ── cylinder ── */
@@ -193,7 +193,7 @@
   cylinder.rotation.x = 5 * (Math.PI / 180);
   cylinder.castShadow = false; 
   cylinder.receiveShadow = false;
-  scene.add(cylinder);
+  carbodyscene.add(cylinder);
 
   /* ── cap cube (parented to cylinder) ── */
   const capCube = new THREE.Mesh(
@@ -219,8 +219,8 @@
     s.shadow.camera.near = 0.5;
     s.shadow.camera.far  = 14;
     s.target.position.set(tx, ty, tz);
-    scene.add(s);
-    scene.add(s.target);
+    carbodyscene.add(s);
+    carbodyscene.add(s.target);
     return s;
   }
 
@@ -309,7 +309,7 @@
         : easeInOut(9, -9, cylT - 3);
 
     controls.update();
-    renderer.render(scene, camera);
+    renderer.render(carbodyscene, camera);
   }
 
   renderer.setAnimationLoop(animate);
@@ -343,18 +343,15 @@
 
   /* ── GLTF: Lancer ── */
   const gltfLoader = new THREE.GLTFLoader();
-/*
-  // Add Draco decoder support in case the model uses Draco compression
-  const dracoLoader = new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
-  gltfLoader.setDRACOLoader(dracoLoader);
-*/
-  gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled.glb'
- /*   'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_wheels.glb' */
-    (gltf) => {
-      const model = gltf.scene;
 
+   /*   'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_wheels.glb' */
+  
+  gltfLoader.load(
+    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled.glb',
+    (gltf) => {
+      console.log(gltf)
+      const carbody = gltf.scene;
+      
       // Compute bounding box BEFORE any transforms
       const box    = new THREE.Box3().setFromObject(model);
       const size   = box.getSize(new THREE.Vector3());
@@ -363,10 +360,10 @@
       // Scale to fit within 2m
       const maxDim = Math.max(size.x, size.y, size.z);
       const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      model.scale.setScalar(scale);
+      carbody.scale.setScalar(scale);
 
       // Centre at origin, then lift to sit on the plane
-      model.position.set(
+      carbody.position.set(
         -centre.x * scale,
         -centre.y * scale + (size.y * scale / 2.125),
         -centre.z * scale -.2
@@ -382,12 +379,12 @@
           o.castShadow    = true;
           o.receiveShadow = true;
           // Ensure materials are double-sided in case normals are flipped
-      //    if (o.material) o.material.side = THREE.DoubleSide;
+        if (o.material) o.material.side = THREE.DoubleSide;
         }
       });
 
-      scene.add(model);
-      patroller = model;
+      scene.add(carbody);
+      patroller = carbody;
       console.log('Flying patroller loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
     },
     (xhr) => {
