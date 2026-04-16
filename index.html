@@ -2,390 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scene · WebXR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js Scene</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700&display=swap');
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --dark:    #0a0c0f;
-      --panel:   rgba(10, 12, 15, 0.82);
-      --border:  rgba(107, 124, 62, 0.35);
-      --text:    #d4dcc2;
-      --accent:  #aec65e;
-    }
-
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--dark);
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--text);
-    }
-
-    #canvas-container { position: fixed; inset: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a0f; }
     canvas { display: block; }
-
-    #hud {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      display: flex; flex-direction: column;
-      justify-content: space-between;
-      padding: 24px;
-      z-index: 10;
-    }
-
-    #title-block { display: flex; flex-direction: column; gap: 4px; }
-    #title-block h1 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      line-height: 1;
-    }
-    #title-block p { font-size: .68rem; opacity: .5; letter-spacing: .08em; }
-
-    #bottom-row { display: flex; justify-content: space-between; align-items: flex-end; }
-
-    #stats-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 16px;
-      backdrop-filter: blur(8px);
-      font-size: .68rem;
-      line-height: 1.9;
-      opacity: .85;
-    }
-    #stats-panel span { color: var(--accent); }
-
-    #xr-btn {
-      pointer-events: all;
-      background: transparent;
-      border: 1.5px solid var(--accent);
-      color: var(--accent);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: .8rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      padding: 10px 22px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background .2s, color .2s, box-shadow .2s;
-      position: relative;
-      overflow: hidden;
-    }
-    #xr-btn::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .25s ease;
-      z-index: -1;
-    }
-    #xr-btn:hover::before { transform: scaleX(1); }
-    #xr-btn:hover { color: var(--dark); box-shadow: 0 0 18px rgba(174,198,94,.35); }
-    #xr-btn:disabled { opacity: .35; cursor: not-allowed; border-color: #555; color: #555; }
-    #xr-btn:disabled::before { display: none; }
-
-    #hud::before {
-      content: '';
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(
-        to bottom, transparent, transparent 3px,
-        rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px
-      );
-      pointer-events: none;
-    }
-
-    #vignette {
-      position: fixed; inset: 0; z-index: 5; pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.72) 100%);
-    }
-
-    #xr-not-supported {
-      display: none;
-      position: fixed;
-      bottom: 80px; right: 24px;
-      background: var(--panel);
-      border: 1px solid #c0392b55;
-      color: #e74c3c;
-      font-size: .68rem;
-      padding: 8px 14px;
-      border-radius: 4px;
-      backdrop-filter: blur(6px);
-      z-index: 20;
-    }
   </style>
 </head>
 <body>
-
-<div id="canvas-container"></div>
-<div id="vignette"></div>
-
-<div id="hud">
-  <div id="title-block">
-    <h1>Night Drive</h1>
-    <p>Three.js · WebXR · Claude</p>
-  </div>
-  <div id="bottom-row">
-    <div id="stats-panel">
-      Plane &nbsp;&nbsp;<span>9m × 3m</span><br>
-      Lights &nbsp;<span>2 × Spot + Cylinder</span><br>
-      Model &nbsp;<span>Porche-911</span>
-    </div>
-    <button id="xr-btn">Face Computer</button>
-  </div>
-</div>
-
-<div id="xr-not-supported">WebXR not available on this device/browser.</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
-<script>
-(function () {
-
-  /* ── renderer ── */
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.xr.enabled = true;
-  document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-  /* ── scene ── */
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a0c0f);
-  scene.fog = new THREE.Fog(0x232a3b, 12, 22);
-
-  /* ── plane ── */
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(16, 3),
-    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
-  );
-  plane.rotation.x = -Math.PI / 2 ;
-  plane.receiveShadow = true;
-  scene.add(plane);
-
-  /* ── grid ── */
-  const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
-  gridMain.position.y = 0.002;
-  scene.add(gridMain);
-  const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
-  gridZ.position.y = 0.003;
-  scene.add(gridZ);
-
-
-  /* ── cylinder ── */
-  const cylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
-  );
-  cylinder.position.set(6, 1.115, -1.28);
-  cylinder.rotation.x = 5 * (Math.PI / 180);
-  cylinder.castShadow = false; 
-  cylinder.receiveShadow = false;
-  scene.add(cylinder);
-
-  /* ── cap cube (parented to cylinder) ── */
-  const capCube = new THREE.Mesh(
-    new THREE.BoxGeometry(0.22, 0.05, 0.5),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
-  );
-  capCube.position.set(0, 1.275, 0.25);
-  capCube.rotation.x = -5 * (Math.PI / 180);
-  capCube.castShadow = false; 
-  capCube.receiveShadow = false;
-  cylinder.add(capCube);
-
-  /* ── spotlights ── */
-  function makeSpot(color, intensity, x, y, z, tx, ty, tz) {
-    const s = new THREE.SpotLight(color, intensity);
-    s.position.set(x, y, z);
-    s.angle = Math.PI / 7;
-    s.penumbra = 0.35;
-    s.decay = 1.8;
-    s.distance = 12;
-    s.castShadow = true;
-    s.shadow.mapSize.width = s.shadow.mapSize.height = 1024;
-    s.shadow.camera.near = 0.5;
-    s.shadow.camera.far  = 14;
-    s.target.position.set(tx, ty, tz);
-    scene.add(s);
-    scene.add(s.target);
-    return s;
-  }
-
-  const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
-  spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
-
-  /* ── cylinder spotlight (parented) ── */
-  const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
-  cylSpot.position.set(0, 0.775, 1);
-  cylSpot.angle    = 55 * (Math.PI / 180);
-  cylSpot.penumbra = 0.75;
-  cylSpot.decay    = 1.5;
-  cylSpot.distance = 8;
-  cylSpot.castShadow = true;
-  cylSpot.shadow.mapSize.width = cylSpot.shadow.mapSize.height = 1024;
-  cylSpot.shadow.camera.near = 0.1;
-  cylSpot.shadow.camera.far  = 10;
-  cylSpot.target.position.set(0, -0.775, 0.775 * Math.tan(45 * Math.PI / 180));
-  cylinder.add(cylSpot);
-  cylinder.add(cylSpot.target);
-
-  /* ── camera + orbit controls ── */
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(4, 4, 4);
-  camera.lookAt(0, 0, 0);
-  
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.minDistance = 1;
-  controls.maxDistance = 20;
-  controls.target.set(0, 0.5, 0.5);
-  controls.update();
-  
-// Resize automatically
-  window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
-
-  /* ── animation ── */
-  const clock  = new THREE.Clock();
-  const DEG    = Math.PI / 180;
-  let lancer = null;
-
-  // Wobble keyframes: 0° → +2° → −2° → 0° over 3 seconds
-  const KEYS = [
-    { t: 0,   v:  0       },
-    { t: 1/3, v:  2 * DEG },
-    { t: 2/3, v: -2 * DEG },
-    { t: 1,   v:  0       },
-  ];
-
-  function easeInOut(a, b, t) {
-    const e = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;
-    return a + (b - a) * e;
-  }
-
-  function getWobble(ct) {
-    for (let i = 0; i < KEYS.length - 1; i++) {
-      const k0 = KEYS[i], k1 = KEYS[i+1];
-      if (ct >= k0.t && ct <= k1.t) {
-        return easeInOut(k0.v, k1.v, (ct - k0.t) / (k1.t - k0.t));
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
       }
     }
-    return 0;
-  }
+  </script>
 
-  function animate() {
-    const dt      = clock.getDelta();
-    const elapsed = clock.elapsedTime;
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-    // Lancer X wobble ±2° on top of base -90°
-    if (lancer) {
-      lancer.rotation.x = 0 + getWobble((elapsed % 3) / 3);
+    // ── Renderer ──────────────────────────────────────────────────────────────
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    document.body.appendChild(renderer.domElement);
+
+    // ── Scene ─────────────────────────────────────────────────────────────────
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a0f);
+    scene.fog = new THREE.Fog(0x0a0a0f, 8, 25);
+
+    // ── Camera ────────────────────────────────────────────────────────────────
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.01, 100);
+    camera.position.set(3, 2, 4);
+    camera.lookAt(0, 0.5, 0);
+
+    // ── Orbit Controls ────────────────────────────────────────────────────────
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.target.set(0, 0.3, 0);
+    controls.minDistance = 0.5;
+    controls.maxDistance = 20;
+    controls.update();
+
+    // ── Ground Plane  (16 m wide × 3 m long) ─────────────────────────────────
+    const groundGeo = new THREE.PlaneGeometry(16, 3);
+    const groundMat = new THREE.MeshStandardMaterial({
+      color: 0x1a1a22,
+      roughness: 0.85,
+      metalness: 0.1,
+    });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // subtle grid lines on the ground
+    const gridHelper = new THREE.GridHelper(16, 32, 0x2a2a3a, 0x2a2a3a);
+    gridHelper.position.y = 0.001;
+    scene.add(gridHelper);
+
+    // ── Ambient Light ─────────────────────────────────────────────────────────
+    const ambientLight = new THREE.AmbientLight(0x1a1a2e, 1.5);
+    scene.add(ambientLight);
+
+    // ── Hemisphere Light ──────────────────────────────────────────────────────
+    const hemiLight = new THREE.HemisphereLight(0x334466, 0x0a0a0f, 0.6);
+    scene.add(hemiLight);
+
+    // ── Spotlight  xPos=2.0, yPos=2.0, zPos=1.0 ──────────────────────────────
+    const spotlight = new THREE.SpotLight(0xfff4e0, 80, 15, Math.PI / 5, 0.3, 1.5);
+    spotlight.position.set(2.0, 2.0, 1.0);
+    spotlight.target.position.set(0, 0, 0.5);
+    spotlight.castShadow = true;
+    spotlight.shadow.mapSize.width  = 2048;
+    spotlight.shadow.mapSize.height = 2048;
+    spotlight.shadow.camera.near = 0.2;
+    spotlight.shadow.camera.far  = 12;
+    spotlight.shadow.bias = -0.001;
+    scene.add(spotlight);
+    scene.add(spotlight.target);
+
+    // ── GLTF Loader ───────────────────────────────────────────────────────────
+    const loader = new GLTFLoader();
+
+    function loadModel(url, x, y, z) {
+      return new Promise((resolve, reject) => {
+        loader.load(
+          url,
+          (gltf) => {
+            const model = gltf.scene;
+            model.position.set(x, y, z);
+            // enable shadows on every mesh
+            model.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow    = true;
+                child.receiveShadow = true;
+              }
+            });
+            scene.add(model);
+            resolve(model);
+          },
+          undefined,
+          reject
+        );
+      });
     }
 
-    // Cylinder X sweep
-    const cylT = elapsed % 4;
-    cylinder.position.x = cylT < 1
-      ? easeInOut(15, -15, cylT)
-      : cylT < 3
-        ? 9
-        : easeInOut(6, -6, cylT - 3);
+    // Model 1 – car body (single instance)
+    loadModel(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled_nowheels.glb',
+      0, 0.215, 0.5
+    ).catch(console.error);
 
-    controls.update();
-    renderer.render(scene, camera);
-  }
+    // Model 2 – wheels (two instances)
+    loadModel(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x.glb',
+       0.75, 0.215, 0.5
+    ).catch(console.error);
 
-  renderer.setAnimationLoop(animate);
+    loadModel(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x.glb',
+      -0.75, 0.215, 0.5
+    ).catch(console.error);
 
-  /* ── WebXR ── */
-  const xrBtn       = document.getElementById('xr-btn');
-  const xrNoSupport = document.getElementById('xr-not-supported');
-  let   xrSession   = null;
-
-  async function enterXR() {
-    if (!navigator.xr) { showNoSupport(); return; }
-    const ok = await navigator.xr.isSessionSupported('immersive-vr').catch(() => false);
-    if (!ok) { showNoSupport(); return; }
-    xrSession = await navigator.xr.requestSession('immersive-vr', {
-      requiredFeatures: ['local-floor'],
-      optionalFeatures: ['bounded-floor', 'hand-tracking'],
+    // ── Resize handler ────────────────────────────────────────────────────────
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
-    renderer.xr.setSession(xrSession);
-    xrBtn.textContent = 'Exit XR';
-    xrSession.addEventListener('end', () => { xrSession = null; xrBtn.textContent = 'Enter XR'; });
-  }
 
-  function exitXR() { if (xrSession) xrSession.end(); }
-  function showNoSupport() {
-    xrNoSupport.style.display = 'block';
-    setTimeout(() => xrNoSupport.style.display = 'none', 3500);
-  }
-
-  xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
-  if (!('xr' in navigator)) { xrBtn.disabled = true; }
-  
-/* ── GLTF: Lancer ── */
-  const gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled_nowheels.glb',
-    (gltf) => {
-      const model = gltf.scene;
-//      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
-
-      // Compute bounding box BEFORE any transforms
-      const box    = new THREE.Box3().setFromObject(model);
-      const size   = box.getSize(new THREE.Vector3());
-      const centre = box.getCenter(new THREE.Vector3());
-
-      // Scale to fit within 2m
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      model.scale.setScalar(scale);
-
-      // Centre at origin, then lift to sit on the plane
-      model.position.set(
-        -centre.x * scale,
-        -centre.y * scale + (size.y * scale / 2.125),
-        -centre.z * scale -.2
-      );
-   
-      model.traverse(o => {
-        if (o.isMesh) {
-          o.castShadow    = true;
-          o.receiveShadow = true;
-          // Ensure materials are double-sided in case normals are flipped
-     //     if (o.material) o.material.side = THREE.DoubleSide;
-        }
-      });
-
-      scene.add(model);
-      lancer = model;
-      console.log('Lancer loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
-    },
-    (xhr) => {
-      if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
-    },
-    (err) => console.error('GLTF load error:', err)
-  );
-})(); 
-
-</script>
+    // ── Render loop ───────────────────────────────────────────────────────────
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>
