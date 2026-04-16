@@ -398,57 +398,7 @@
     },
     (err) => console.error('GLTF load error:', err)
   );
-})();
-  
-  /* ── GLTF: Wheel ── 
-//  const wheelLoader = new THREE.GLTFLoader();
-//  wheelLoader.load(
-  loader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x.glb'
-    (gltf) => {
-      const wheel1 = gltf.scene;
-    //  wheel1.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
-
-      // Compute bounding box BEFORE any transforms
-      const box    = new THREE.Box3().setFromObject(wheel1);
-      const size   = box.getSize(new THREE.Vector3());
-      const centre = box.getCenter(new THREE.Vector3());
-
-      // Scale to fit within 2m
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      wheel1.scale.setScalar(scale);
-
-      // Centre at origin, then lift to sit on the plane
-      wheel1.position.set(
-        -centre.x * scale + 2,
-        -centre.y * scale + (size.y * scale / 2.125),
-        -centre.z * scale 
-      );
-      
-//   wheel1.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
- //    wheel1.rotation.x = -Math.PI / 2;
-   // wheel1.rotation.z = Math.PI / 2;
-   
-      wheel1.traverse(o => {
-        if (o.isMesh) {
-          o.castShadow    = true;
-          o.receiveShadow = true;
-          // Ensure materials are double-sided in case normals are flipped
-      //    if (o.material) o.material.side = THREE.DoubleSide;
-        }
-      });
-
-      scene.add(wheel1);
-      2wheels = model;
-      console.log('2wheels loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
-    },
-    (xhr) => {
-      if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
-    },
-    (err) => console.error('GLTF load error:', err)
-  );
-*/  
+})(); 
 
 </script>
 </body>
