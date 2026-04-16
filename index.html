@@ -400,8 +400,9 @@
   );
 
   /* ── GLTF: Wheel ── */
-  const wheelLoader = new THREE.GLTFLoader();
-  wheelLoader.load(
+//  const wheelLoader = new THREE.GLTFLoader();
+//  wheelLoader.load(
+  loader.load(
     'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x.glb'
     (gltf) => {
       const wheel1 = gltf.scene;
