@@ -38,7 +38,7 @@
 
     // ── Scene ─────────────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a0f);
+    scene.background = new THREE.Color(0x006644);
     scene.fog = new THREE.Fog(0x0a0a0f, 8, 25);
 
     // ── Camera ────────────────────────────────────────────────────────────────
@@ -59,8 +59,8 @@
     const groundGeo = new THREE.PlaneGeometry(16, 3);
     const groundMat = new THREE.MeshStandardMaterial({
       color: 0x1a1a22,
-      roughness: 0.85,
-      metalness: 0.1,
+      roughness: 0.65,
+      metalness: 0.6,
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
