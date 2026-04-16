@@ -344,7 +344,7 @@
 /* ── GLTF: Lancer ── */
   const gltfLoader = new THREE.GLTFLoader();
   gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled.glb',
+    'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/lancer_green_scaled_nowheels.glb',
     (gltf) => {
       const model = gltf.scene;
 //      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
@@ -362,8 +362,7 @@
       // Centre at origin, then lift to sit on the plane
       model.position.set(
         -centre.x * scale,
-        -centre.y * scale,
-        //+ (size.y * scale / 2.125),
+        -centre.y * scale + (size.y * scale / 2.125),
         -centre.z * scale -.2
       );
    
