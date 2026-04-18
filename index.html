@@ -173,21 +173,25 @@ const fragmentShader = /* glsl */`
 
     const texPLane = new THREE.PlaneGeometry(10, 4);
     const texLoader = new THREE.TextureLoader();
-    const map = texLoader.load(https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg, 
+    const streetmap = texLoader.load(https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg, 
     (tex01) => {  
       tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
       tex01.repeat.set(1, 1);
     //side: THREE.DoubleSide
     });
+
+    const streetMat = newTHREE.MeshBasicMaterial ({
+      streetmap
+    });
+    const plane02tex = new THREE.Mesh(texPLane, streetMat);
     
-    const plane02tex = new THREE.Mesh(texPLane, planeMat);
     plane02tex.rotation.x = -Math.PI / 2;
     plane02tex.receiveShadow = true;
     plane02tex.xPos = 0;
     plane02tex.zPos = 3;
     scene.add(plane02tex);
     
-    // subtle grid lines on the ground
+    // subtle grid lines on the ground ───────────────────────────────
     const gridHelper = new THREE.GridHelper(16, 32, 0x2a2a3a, 0x2a2a3a);
     gridHelper.position.y = 0.001;
     scene.add(gridHelper);
