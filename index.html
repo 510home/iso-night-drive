@@ -180,9 +180,10 @@ const fragmentShader = /* glsl */`
     //side: THREE.DoubleSide
     });
 
-    const streetMat = newTHREE.MeshBasicMaterial ({
+    const streetMat = new THREE.MeshBasicMaterial ({
       streetmap
     });
+    
     const plane02tex = new THREE.Mesh(texPLane, streetMat);
     
     plane02tex.rotation.x = -Math.PI / 2;
