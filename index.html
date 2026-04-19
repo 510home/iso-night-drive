@@ -174,17 +174,17 @@ const fragmentShader = /* glsl */`
 
     const texPLane = new THREE.PlaneGeometry(16, 4);
     const texLoader = new THREE.TextureLoader();
-    const streetmap = texLoader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg', (tex01) => {  
-      tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
-      tex01.repeat.set(2, 1);
-    });  
+//    const streetmap = texLoader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg', (tex01) => {  
+//      tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
+//      tex01.repeat.set(2, 1);
+//    });  
 
-    +  let streetmap = null;
-+  streetmap = texLoader.load('https://raw.githubusercontent.com/…', (tex01) => {
-+    tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
-+    tex01.repeat.set(2, 1);
-+    streetmap = tex01;   // replace the Promise-like ref with the real texture
-+  });
+  let streetmap = null;
+  streetmap = texLoader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg', (tex01) => {
+    tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
+    tex01.repeat.set(2, 1);
+    streetmap = tex01;   // replace the Promise-like ref with the real texture
+  });
     
     const streetMat = new THREE.MeshStandardMaterial ({
       metalness: 0.2,
