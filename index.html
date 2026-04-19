@@ -178,9 +178,12 @@ const fragmentShader = /* glsl */`
   //    tex01.repeat.set(1, 1);
     });  
 
-    const streetMat = new THREE.MeshBasicMaterial ({
+    const streetMat = new THREE.MeshStandardMaterial ({
       color: 004422,
-      streetmap
+      metalness: 0.2,
+      roughness: 0.5,
+      map: streetmap,
+      side: THREE.DoubleSide,
     });
     
     const plane02tex = new THREE.Mesh(texPLane, streetMat);
