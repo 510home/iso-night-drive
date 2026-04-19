@@ -171,7 +171,7 @@ const fragmentShader = /* glsl */`
 
     // ── Ground Plane 02 (10 m wide × 3 m long) ─────────────────────────────────
 
-    const texPLane = new THREE.PlaneGeometry(8, 4);
+    const texPLane = new THREE.PlaneGeometry(16, 4);
     const texLoader = new THREE.TextureLoader();
     const streetmap = texLoader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg', (tex01) => {  
       tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
