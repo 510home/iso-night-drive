@@ -174,12 +174,13 @@ const fragmentShader = /* glsl */`
     const texPLane = new THREE.PlaneGeometry(10, 4);
     const texLoader = new THREE.TextureLoader();
     const streetmap = texLoader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg', (tex01) => {  
-      tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
-      tex01.repeat.set(1, 1);
+  //    tex01.wrapS = tex01.wrapT = THREE.RepeatWrapping;
+  //    tex01.repeat.set(1, 1);
     //side: THREE.DoubleSide
     });  
 
     const streetMat = new THREE.MeshBasicMaterial ({
+      color: 004422,
       streetmap
     });
     
@@ -187,7 +188,7 @@ const fragmentShader = /* glsl */`
     
     plane02tex.rotation.x = -Math.PI / 2;
     plane02tex.receiveShadow = true;
-    plane02tex.position.set(2, -1, 3);
+    plane02tex.position.set(1, -0.5, 2);
     scene.add(plane02tex);
     
     // subtle grid lines on the ground ───────────────────────────────
