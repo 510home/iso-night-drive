@@ -206,7 +206,7 @@ const fragmentShader = /* glsl */`
 //    scene.add(hemiLight);
 
     // ── Spotlight  xPos=2.0, yPos=2.0, zPos=1.0 ──────────────────────────────
-    const spotlight = new THREE.SpotLight(0xfff4e0, 10, 9, 15, 0.76);
+    const spotlight = new THREE.SpotLight(0xfff4e0, 10, 9, 15, 1);
     spotlight.position.set(4.0, 2.0, 1.0);
     spotlight.target.position.set(0, 0, 0.5);
     spotlight.castShadow = true;
