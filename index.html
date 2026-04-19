@@ -24,6 +24,7 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { THREE-CustomShaderMaterial } from 'https://raw.githubusercontent.com/FarazzShaikh/THREE-CustomShaderMaterial';
 
     // ── Renderer ──────────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -179,8 +180,8 @@ const fragmentShader = /* glsl */`
     });  
 
     const streetMat = new THREE.MeshStandardMaterial ({
-    //  metalness: 0.2,
-    //  roughness: 0.5,
+      metalness: 0.2,
+      roughness: 0.5,
       map: streetmap,
       side: THREE.DoubleSide,
     });
@@ -189,7 +190,7 @@ const fragmentShader = /* glsl */`
     
     plane02tex.rotation.x = -Math.PI / 2;
     plane02tex.receiveShadow = true;
-    plane02tex.position.set(0, -0.3, -2);
+    plane02tex.position.set(0, -0.3, -1);
     scene.add(plane02tex);
     
     // subtle grid lines on the ground ───────────────────────────────
