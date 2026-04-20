@@ -207,7 +207,7 @@
       var light = buildLights(scene);
       var camera = buildCamera(width, height);
       var renderer = buildRender(width, height);
-      var mesh = addObjects(scene);
+   //   var mesh = addObjects(scene);
       addSphere(scene);
 
       // ── OrbitControls ──────────────────────────────────────────
@@ -283,7 +283,7 @@
       }
  // ── PLANE STREET TEXTURE ──────────────────────────────────────────
       function addObjects(scene) {
-        var geometry = new THREE.PlaneGeometry(4, 12);
+        var geometry = new THREE.PlaneGeometry(4, 18);
 
         var loader = new THREE.TextureLoader();
         var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
