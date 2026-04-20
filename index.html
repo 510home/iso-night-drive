@@ -41,7 +41,103 @@
       z-index: 0;
     }
 
+    /* ── Overlay UI ── */
+    .ui {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      inset: 0;
+    }
 
+    /* top-left title block */
+    .title-block {
+      position: absolute;
+      top: 40px;
+      left: 48px;
+    }
+
+    .title-block .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.3s forwards;
+    }
+
+    .title-block h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      color: var(--off-white);
+      line-height: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.6s forwards;
+    }
+
+    .title-block h1 span {
+      color: var(--accent);
+    }
+
+    /* bottom-right meta */
+    .meta {
+      position: absolute;
+      bottom: 40px;
+      right: 48px;
+      text-align: right;
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+
+    .meta p {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(232,226,213,0.35);
+      line-height: 2;
+    }
+
+    /* bottom-left status dot */
+    .status {
+      position: absolute;
+      bottom: 40px;
+      left: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    .status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status p {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(232,226,213,0.4);
+    }
+
+    /* thin vertical rule on far right */
+    .rule {
+      position: absolute;
+      top: 0;
+      right: 120px;
+      width: 1px;
+      height: 100vh;
+      background: linear-gradient(to bottom, transparent, rgba(168,194,71,0.15) 30%, rgba(168,194,71,0.15) 70%, transparent);
+      opacity: 0;
+      animation: fadeIn 2s ease 1.5s forwards;
+    }
 
     /* scan-line vignette */
     .vignette {
@@ -127,13 +223,13 @@
       var width = canvas.width;
       var height = canvas.height;
 
-      const scene = new THREE.Scene();
+      var scene = new THREE.Scene();
       scene.background = new THREE.Color("#331477");
 
-      const light = buildLights(scene);
-      const camera = buildCamera(width, height);
-      const renderer = buildRender(width, height);
-      const mesh = addObjects(scene);
+      var light = buildLights(scene);
+      var camera = buildCamera(width, height);
+      var renderer = buildRender(width, height);
+      var mesh = addObjects(scene);
       addSphere(scene);
 
       // ── OrbitControls ──────────────────────────────────────────
@@ -209,32 +305,31 @@
       }
 
       function addObjects(scene) {
-        var geometry = new THREE.PlaneGeometry(3, 16);
+        var geometry = new THREE.PlaneGeometry(12, 12);
 
-        const loader = new THREE.TextureLoader();
-        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
-        const roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+        var loader = new THREE.TextureLoader();
+        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
-        colorMap.repeat.set(1, 2);
+        colorMap.repeat.set(1, 1);
 
-        const roadMat = new THREE.MeshStandardMaterial({
+        var material = new THREE.MeshStandardMaterial({
           map: colorMap,
           transparent: false,
           side: THREE.DoubleSide,
-      //    roughness: roughMap
+          roughness: 1
         });
 
-        const plane = new THREE.Mesh(geometry, roadMat);
-        plane.rotation.x = -Math.PI / 2;
-        scene.add(plane);
-     //   return plane;
-      };
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
+        scene.add(mesh);
+        return mesh;
+      }
 
       function addSphere(scene) {
         var geometry = new THREE.SphereGeometry(2, 64, 64);
-        var ballmaterial = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
-        var sphere = new THREE.Mesh(geometry, ballmaterial);
+        var material = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
+        var sphere = new THREE.Mesh(geometry, material);
         sphere.position.set(0, -3, 0);
         scene.add(sphere);
         return sphere;
@@ -243,7 +338,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-    //    plane.roadMat.colorMap.offset.y = time * -0.0085;
+        mesh.material.map.offset.y = time * 0.0015;
 
         applyWASD();
         controls.update();   // required for damping
