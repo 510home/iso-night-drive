@@ -2,390 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scene · WebXR</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700&display=swap');
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THREE.JS — Grass Field</title>
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     :root {
-      --dark:    #0a0c0f;
-      --panel:   rgba(10, 12, 15, 0.82);
-      --border:  rgba(107, 124, 62, 0.35);
-      --text:    #d4dcc2;
-      --accent:  #aec65e;
+      --green: #a8c247;
+      --dark: #202020;
+      --off-white: #e8e2d5;
+      --accent: #c4a84a;
     }
 
     html, body {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       background: var(--dark);
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--text);
+      font-family: 'Space Mono', monospace;
     }
 
-    #canvas-container { position: fixed; inset: 0; }
-    canvas { display: block; }
-
-    #hud {
-      position: fixed; inset: 0;
-      pointer-events: none;
-      display: flex; flex-direction: column;
-      justify-content: space-between;
-      padding: 24px;
-      z-index: 10;
-    }
-
-    #title-block { display: flex; flex-direction: column; gap: 4px; }
-    #title-block h1 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      line-height: 1;
-    }
-    #title-block p { font-size: .68rem; opacity: .5; letter-spacing: .08em; }
-
-    #bottom-row { display: flex; justify-content: space-between; align-items: flex-end; }
-
-    #stats-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 16px;
-      backdrop-filter: blur(8px);
-      font-size: .68rem;
-      line-height: 1.9;
-      opacity: .85;
-    }
-    #stats-panel span { color: var(--accent); }
-
-    #xr-btn {
-      pointer-events: all;
-      background: transparent;
-      border: 1.5px solid var(--accent);
-      color: var(--accent);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: .8rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      padding: 10px 22px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background .2s, color .2s, box-shadow .2s;
-      position: relative;
-      overflow: hidden;
-    }
-    #xr-btn::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .25s ease;
-      z-index: -1;
-    }
-    #xr-btn:hover::before { transform: scaleX(1); }
-    #xr-btn:hover { color: var(--dark); box-shadow: 0 0 18px rgba(174,198,94,.35); }
-    #xr-btn:disabled { opacity: .35; cursor: not-allowed; border-color: #555; color: #555; }
-    #xr-btn:disabled::before { display: none; }
-
-    #hud::before {
-      content: '';
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(
-        to bottom, transparent, transparent 3px,
-        rgba(0,0,0,.06) 3px, rgba(0,0,0,.06) 4px
-      );
-      pointer-events: none;
-    }
-
-    #vignette {
-      position: fixed; inset: 0; z-index: 5; pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.72) 100%);
-    }
-
-    #xr-not-supported {
-      display: none;
+    #canvas {
+      display: block;
       position: fixed;
-      bottom: 80px; right: 24px;
-      background: var(--panel);
-      border: 1px solid #c0392b55;
-      color: #e74c3c;
-      font-size: .68rem;
-      padding: 8px 14px;
-      border-radius: 4px;
-      backdrop-filter: blur(6px);
-      z-index: 20;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+
+
+    /* bottom-right meta */
+    .meta {
+      position: absolute;
+      bottom: 40px;
+      right: 48px;
+      text-align: right;
+      opacity: 0;
+      animation: fadeUp 1s ease 1s forwards;
+    }
+
+    .meta p {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(232,226,213,0.35);
+      line-height: 2;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(1.4); }
     }
   </style>
 </head>
 <body>
 
-<div id="canvas-container"></div>
-<div id="vignette"></div>
+  <canvas id="canvas"></canvas>
 
-<div id="hud">
-  <div id="title-block">
-    <h1>Night Drive</h1>
-    <p>Three.js · WebXR · Claude</p>
-  </div>
-  <div id="bottom-row">
-    <div id="stats-panel">
-      Plane &nbsp;&nbsp;<span>9m × 3m</span><br>
-      Lights &nbsp;<span>2 × Spot + Cylinder</span><br>
-      Model &nbsp;<span>Porche-911</span>
+  <div class="vignette"></div>
+
+  <div class="ui">
+    <div class="title-block">
+      <div class="eyebrow">Three.js — Live render</div>
+      <h1>Grass<br /><span>Field</span></h1>
     </div>
-    <button id="xr-btn">Face Computer</button>
+
+    <div class="rule"></div>
+
+    <div class="meta">
+      <p>WebGL 1.0</p>
+      <p>SpotLight / DoubleSide</p>
+      <p>Alpha texture scroll</p>
+      <p style="margin-top:8px; color: rgba(168,194,71,0.5);">WASD — move</p>
+      <p style="color: rgba(168,194,71,0.5);">Drag — orbit &nbsp;|&nbsp; Scroll — zoom</p>
+    </div>
+
+    <div class="status">
+      <div class="dot"></div>
+      <p>Rendering</p>
+    </div>
   </div>
-</div>
 
-<div id="xr-not-supported">WebXR not available on this device/browser.</div>
+  <script>
+    var canvas = document.getElementById("canvas");
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
-<script>
-(function () {
+    window.onresize = resizeCanvas;
+    resizeCanvas();
 
-  /* ── renderer ── */
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.xr.enabled = true;
-  document.getElementById('canvas-container').appendChild(renderer.domElement);
+    var scene = new Scene(canvas);
 
-  /* ── scene ── */
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a0c0f);
-  scene.fog = new THREE.Fog(0x232a3b, 12, 22);
+    render();
 
-  /* ── plane ── */
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(16, 3),
-    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
-  );
-  plane.rotation.x = -Math.PI / 2 ;
-  plane.receiveShadow = true;
-  scene.add(plane);
-
-  /* ── grid ── */
-  const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
-  gridMain.position.y = 0.002;
-  scene.add(gridMain);
-  const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
-  gridZ.position.y = 0.003;
-  scene.add(gridZ);
-
-
-  /* ── cylinder ── */
-  const cylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
-  );
-  cylinder.position.set(6, 1.115, -1.28);
-  cylinder.rotation.x = 5 * (Math.PI / 180);
-  cylinder.castShadow = false; 
-  cylinder.receiveShadow = false;
-  scene.add(cylinder);
-
-  /* ── cap cube (parented to cylinder) ── */
-  const capCube = new THREE.Mesh(
-    new THREE.BoxGeometry(0.22, 0.05, 0.5),
-    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
-  );
-  capCube.position.set(0, 1.275, 0.25);
-  capCube.rotation.x = -5 * (Math.PI / 180);
-  capCube.castShadow = false; 
-  capCube.receiveShadow = false;
-  cylinder.add(capCube);
-
-  /* ── spotlights ── */
-  function makeSpot(color, intensity, x, y, z, tx, ty, tz) {
-    const s = new THREE.SpotLight(color, intensity);
-    s.position.set(x, y, z);
-    s.angle = Math.PI / 7;
-    s.penumbra = 0.35;
-    s.decay = 1.8;
-    s.distance = 12;
-    s.castShadow = true;
-    s.shadow.mapSize.width = s.shadow.mapSize.height = 1024;
-    s.shadow.camera.near = 0.5;
-    s.shadow.camera.far  = 14;
-    s.target.position.set(tx, ty, tz);
-    scene.add(s);
-    scene.add(s.target);
-    return s;
-  }
-
-  const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
-  spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
-
-  /* ── cylinder spotlight (parented) ── */
-  const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
-  cylSpot.position.set(0, 0.775, 1);
-  cylSpot.angle    = 55 * (Math.PI / 180);
-  cylSpot.penumbra = 0.75;
-  cylSpot.decay    = 1.5;
-  cylSpot.distance = 8;
-  cylSpot.castShadow = true;
-  cylSpot.shadow.mapSize.width = cylSpot.shadow.mapSize.height = 1024;
-  cylSpot.shadow.camera.near = 0.1;
-  cylSpot.shadow.camera.far  = 10;
-  cylSpot.target.position.set(0, -0.775, 0.775 * Math.tan(45 * Math.PI / 180));
-  cylinder.add(cylSpot);
-  cylinder.add(cylSpot.target);
-
-  /* ── camera + orbit controls ── */
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(4, 4, 4);
-  camera.lookAt(0, 0, 0);
-  
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.minDistance = 1;
-  controls.maxDistance = 20;
-  controls.target.set(0, 0.5, 0.5);
-  controls.update();
-  
-// Resize automatically
-  window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
-
-  /* ── animation ── */
-  const clock  = new THREE.Clock();
-  const DEG    = Math.PI / 180;
-  let lancer = null;
-
-  // Wobble keyframes: 0° → +2° → −2° → 0° over 3 seconds
-  const KEYS = [
-    { t: 0,   v:  0       },
-    { t: 1/3, v:  2 * DEG },
-    { t: 2/3, v: -2 * DEG },
-    { t: 1,   v:  0       },
-  ];
-
-  function easeInOut(a, b, t) {
-    const e = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;
-    return a + (b - a) * e;
-  }
-
-  function getWobble(ct) {
-    for (let i = 0; i < KEYS.length - 1; i++) {
-      const k0 = KEYS[i], k1 = KEYS[i+1];
-      if (ct >= k0.t && ct <= k1.t) {
-        return easeInOut(k0.v, k1.v, (ct - k0.t) / (k1.t - k0.t));
-      }
-    }
-    return 0;
-  }
-
-  function animate() {
-    const dt      = clock.getDelta();
-    const elapsed = clock.elapsedTime;
-
-    // Lancer X wobble ±2° on top of base -90°
-    if (lancer) {
-      lancer.rotation.x = 0 + getWobble((elapsed % 3) / 3);
+    function render() {
+      requestAnimationFrame(render);
+      scene.update();
     }
 
-    // Cylinder X sweep
-    const cylT = elapsed % 4;
-    cylinder.position.x = cylT < 1
-      ? easeInOut(15, -15, cylT)
-      : cylT < 3
-        ? 9
-        : easeInOut(6, -6, cylT - 3);
+    function resizeCanvas() {
+      var canvas = document.getElementById("canvas");
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      if (scene) scene.onWindowResize();
+    }
 
-    controls.update();
-    renderer.render(scene, camera);
-  }
+    function Scene(canvas) {
+      canvas.width = document.body.clientWidth;
+      canvas.height = document.body.clientHeight;
 
-  renderer.setAnimationLoop(animate);
+      var time = 0;
+      var width = canvas.width;
+      var height = canvas.height;
 
-  /* ── WebXR ── */
-  const xrBtn       = document.getElementById('xr-btn');
-  const xrNoSupport = document.getElementById('xr-not-supported');
-  let   xrSession   = null;
+      var scene = new THREE.Scene();
+      scene.background = new THREE.Color("#331477");
 
-  async function enterXR() {
-    if (!navigator.xr) { showNoSupport(); return; }
-    const ok = await navigator.xr.isSessionSupported('immersive-vr').catch(() => false);
-    if (!ok) { showNoSupport(); return; }
-    xrSession = await navigator.xr.requestSession('immersive-vr', {
-      requiredFeatures: ['local-floor'],
-      optionalFeatures: ['bounded-floor', 'hand-tracking'],
-    });
-    renderer.xr.setSession(xrSession);
-    xrBtn.textContent = 'Exit XR';
-    xrSession.addEventListener('end', () => { xrSession = null; xrBtn.textContent = 'Enter XR'; });
-  }
+      var light = buildLights(scene);
+      var camera = buildCamera(width, height);
+      var renderer = buildRender(width, height);
+      var mesh = addObjects(scene);
+      addSphere(scene);
 
-  function exitXR() { if (xrSession) xrSession.end(); }
-  function showNoSupport() {
-    xrNoSupport.style.display = 'block';
-    setTimeout(() => xrNoSupport.style.display = 'none', 3500);
-  }
+      // ── OrbitControls ──────────────────────────────────────────
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.screenSpacePanning = false;
+      controls.minDistance = 2;
+      controls.maxDistance = 60;
+      controls.maxPolarAngle = Math.PI / 2;   // don't flip below ground
 
-  xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
-  if (!('xr' in navigator)) { xrBtn.disabled = true; }
-  
-/* ── GLTF: Lancer ── */
-  const gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
-    (gltf) => {
-      const model = gltf.scene;
-//      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
+      // ── WASD movement ──────────────────────────────────────────
+      var keys = {};
+      window.addEventListener('keydown', function(e) { keys[e.code] = true; });
+      window.addEventListener('keyup',   function(e) { keys[e.code] = false; });
 
-      // Compute bounding box BEFORE any transforms
-      const box    = new THREE.Box3().setFromObject(model);
-      const size   = box.getSize(new THREE.Vector3());
-      const centre = box.getCenter(new THREE.Vector3());
+      var moveSpeed = 0.08;
+      var moveDir   = new THREE.Vector3();
+      var right     = new THREE.Vector3();
+      var forward   = new THREE.Vector3();
 
-      // Scale to fit within 2m
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      model.scale.setScalar(scale);
+      function applyWASD() {
+        // Get camera's horizontal forward/right (ignore Y so we stay at ground level)
+        camera.getWorldDirection(forward);
+        forward.y = 0;
+        forward.normalize();
+        right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
 
-      // Centre at origin, then lift to sit on the plane
-      model.position.set(
-        -centre.x * scale,
-        -centre.y * scale + (size.y * scale / 2.125),
-        -centre.z * scale -.2
-      );
-   
-      model.traverse(o => {
-        if (o.isMesh) {
-          o.castShadow    = true;
-          o.receiveShadow = true;
-          // Ensure materials are double-sided in case normals are flipped
-     //     if (o.material) o.material.side = THREE.DoubleSide;
+        moveDir.set(0, 0, 0);
+        if (keys['KeyW'] || keys['ArrowUp'])    moveDir.add(forward);
+        if (keys['KeyS'] || keys['ArrowDown'])  moveDir.sub(forward);
+        if (keys['KeyA'] || keys['ArrowLeft'])  moveDir.sub(right);
+        if (keys['KeyD'] || keys['ArrowRight']) moveDir.add(right);
+
+        if (moveDir.lengthSq() > 0) {
+          moveDir.normalize().multiplyScalar(moveSpeed);
+          camera.position.add(moveDir);
+          controls.target.add(moveDir);   // keep orbit pivot travelling with us
         }
-      });
+      }
 
-      scene.add(model);
-      lancer = model;
-      console.log('Lancer loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
-    },
-    (xhr) => {
-      if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
-    },
-    (err) => console.error('GLTF load error:', err)
-  );
-})(); 
+      function buildLights(scene) {
+        var light = new THREE.SpotLight("#fff", 1);
+        light.position.y = 100;
+        light.angle = 1.05;
+        light.decacy = 2;
+        light.penumbra = 1;
+        light.shadow.camera.near = 10;
+        light.shadow.camera.far = 1000;
+        light.shadow.camera.fov = 30;
+        scene.add(light);
+        return light;
+      }
 
-</script>
+      function buildCamera(width, height) {
+        var aspectRatio = width / height;
+        var fieldOfView = 60;
+        var nearPlane = 1;
+        var farPlane = 500;
+        var camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+        camera.position.z = 10;
+        camera.position.y = 2;
+        camera.position.x = -1;
+        return camera;
+      }
+
+      function buildRender(width, height) {
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        var DPR = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
+        renderer.setPixelRatio(DPR);
+        renderer.setSize(width, height);
+        return renderer;
+      }
+
+      function addObjects(scene) {
+        var geometry = new THREE.PlaneGeometry(12, 12);
+        var material = new THREE.MeshStandardMaterial({
+          color: "#a8c247",
+          transparent: true,
+          side: THREE.DoubleSide,
+          alphaTest: .5,
+          opacity: 1,
+          roughness: 1
+        });
+
+        var image = document.createElement('img');
+        var alphaMap = new THREE.Texture(image);
+        image.onload = function () {
+          alphaMap.needsUpdate = true;
+        };
+        image.src = 'https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg';
+        material.alphaMap = alphaMap;
+        material.alphaMap.magFilter = THREE.NearestFilter;
+        material.alphaMap.wrapT = THREE.RepeatWrapping;
+        material.alphaMap.repeat.y = 1;
+
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
+        scene.add(mesh);
+        return mesh;
+      }
+
+      function addSphere(scene) {
+        var geometry = new THREE.SphereGeometry(2, 64, 64);
+        var material = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
+        var sphere = new THREE.Mesh(geometry, material);
+        sphere.position.set(0, -3, 0);
+        scene.add(sphere);
+        return sphere;
+      }
+
+      this.update = function () {
+        time++;
+        light.position.x = Math.sin(time * 0.01) * 200;
+        mesh.material.alphaMap.offset.y = time * 0.0015;
+
+        applyWASD();
+        controls.update();   // required for damping
+
+        renderer.clear();
+        renderer.render(scene, camera);
+      };
+
+      this.onWindowResize = function () {
+        var canvas = document.getElementById("canvas");
+        var width = document.body.clientWidth;
+        var height = document.body.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      };
+    }
+  </script>
 </body>
 </html>
