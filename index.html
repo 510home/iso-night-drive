@@ -306,8 +306,8 @@
 
       function addSphere(scene) {
         var geometry = new THREE.SphereGeometry(2, 64, 64);
-        var material = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
-        var sphere = new THREE.Mesh(geometry, material);
+        var ballmat = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
+        var sphere = new THREE.Mesh(geometry, ballmat);
         sphere.position.set(0, -3, 0);
         scene.add(sphere);
         return sphere;
