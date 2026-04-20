@@ -243,7 +243,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        roadMat.offset.y = time * -0.0085;
+        plane.roadMat.colorMap.offset.y = time * -0.0085;
 
         applyWASD();
         controls.update();   // required for damping
