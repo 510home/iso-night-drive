@@ -207,7 +207,7 @@
       var light = buildLights(scene);
       var camera = buildCamera(width, height);
       var renderer = buildRender(width, height);
-   //   var mesh = addObjects(scene);
+      var mesh = addObjects(scene);
       addSphere(scene);
 
       // ── OrbitControls ──────────────────────────────────────────
@@ -298,7 +298,7 @@
           roughness: 1
         });
 
-        var mesh = new THREE.Mesh(geometry, material);
+   //     var mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.x = -Math.PI / 2;
         scene.add(mesh);
         return mesh;
