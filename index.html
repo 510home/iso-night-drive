@@ -211,24 +211,24 @@
       function addObjects(scene) {
         var geometry = new THREE.PlaneGeometry(4, 8);
 
-        var loader = new THREE.TextureLoader();
-        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+        const loader = new THREE.TextureLoader();
+        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
     //    var roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
         colorMap.repeat.set(1, 2);
 
-        var roadMat = new THREE.MeshStandardMaterial({
+        const roadMat = new THREE.MeshStandardMaterial({
           map: colorMap,
           transparent: false,
           side: THREE.DoubleSide,
           roughness: colorMap
         });
 
-        var plane = new THREE.Mesh(geometry, roadMat);
+        const plane = new THREE.Mesh(geometry, roadMat);
         plane.rotation.x = -Math.PI / 2;
         scene.add(plane);
-        return plane;
+     //   return plane;
       }
 
       function addSphere(scene) {
