@@ -41,7 +41,46 @@
       z-index: 0;
     }
 
+    /* ── Overlay UI ── */
+    .ui {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      inset: 0;
+    }
 
+    /* top-left title block */
+    .title-block {
+      position: absolute;
+      top: 40px;
+      left: 48px;
+    }
+
+    .title-block .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.3s forwards;
+    }
+
+    .title-block h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      color: var(--off-white);
+      line-height: 1;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.6s forwards;
+    }
+
+    .title-block h1 span {
+      color: var(--accent);
+    }
 
     /* bottom-right meta */
     .meta {
@@ -59,6 +98,55 @@
       text-transform: uppercase;
       color: rgba(232,226,213,0.35);
       line-height: 2;
+    }
+
+    /* bottom-left status dot */
+    .status {
+      position: absolute;
+      bottom: 40px;
+      left: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.2s forwards;
+    }
+
+    .status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status p {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(232,226,213,0.4);
+    }
+
+    /* thin vertical rule on far right */
+    .rule {
+      position: absolute;
+      top: 0;
+      right: 120px;
+      width: 1px;
+      height: 100vh;
+      background: linear-gradient(to bottom, transparent, rgba(168,194,71,0.15) 30%, rgba(168,194,71,0.15) 70%, transparent);
+      opacity: 0;
+      animation: fadeIn 2s ease 1.5s forwards;
+    }
+
+    /* scan-line vignette */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+      z-index: 5;
     }
 
     @keyframes fadeUp {
@@ -218,25 +306,19 @@
 
       function addObjects(scene) {
         var geometry = new THREE.PlaneGeometry(12, 12);
+
+        var loader = new THREE.TextureLoader();
+        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg');
+        colorMap.wrapS = THREE.RepeatWrapping;
+        colorMap.wrapT = THREE.RepeatWrapping;
+        colorMap.repeat.set(1, 1);
+
         var material = new THREE.MeshStandardMaterial({
-          color: "#a8c247",
-          transparent: true,
+          map: colorMap,
+          transparent: false,
           side: THREE.DoubleSide,
-          alphaTest: .5,
-          opacity: 1,
           roughness: 1
         });
-
-        var image = document.createElement('img');
-        var alphaMap = new THREE.Texture(image);
-        image.onload = function () {
-          alphaMap.needsUpdate = true;
-        };
-        image.src = 'https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg';
-        material.alphaMap = alphaMap;
-        material.alphaMap.magFilter = THREE.NearestFilter;
-        material.alphaMap.wrapT = THREE.RepeatWrapping;
-        material.alphaMap.repeat.y = 1;
 
         var mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.x = -Math.PI / 2;
@@ -256,7 +338,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        mesh.material.alphaMap.offset.y = time * 0.0015;
+        mesh.material.map.offset.y = time * 0.0015;
 
         applyWASD();
         controls.update();   // required for damping
