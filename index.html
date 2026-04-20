@@ -127,13 +127,13 @@
       var width = canvas.width;
       var height = canvas.height;
 
-      var scene = new THREE.Scene();
+      const scene = new THREE.Scene();
       scene.background = new THREE.Color("#331477");
 
       var light = buildLights(scene);
       var camera = buildCamera(width, height);
       var renderer = buildRender(width, height);
-      var mesh = addObjects(scene);
+      const plane = addObjects(scene);
       addSphere(scene);
 
       // ── OrbitControls ──────────────────────────────────────────
@@ -243,7 +243,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        mesh.material.map.offset.y = time * -0.0085;
+        plane.material.map.offset.y = time * -0.0085;
 
         applyWASD();
         controls.update();   // required for damping
