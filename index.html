@@ -233,8 +233,8 @@
 
       function addSphere(scene) {
         var geometry = new THREE.SphereGeometry(2, 64, 64);
-        var material = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
-        var sphere = new THREE.Mesh(geometry, material);
+        var ballmaterial = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
+        var sphere = new THREE.Mesh(geometry, ballmaterial);
         sphere.position.set(0, -3, 0);
         scene.add(sphere);
         return sphere;
@@ -243,7 +243,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        plane.material.map.offset.y = time * -0.0085;
+        plane.roadMat.map.offset.y = time * -0.0085;
 
         applyWASD();
         controls.update();   // required for damping
