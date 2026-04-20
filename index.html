@@ -212,8 +212,8 @@
         var geometry = new THREE.PlaneGeometry(3, 16);
 
         const loader = new THREE.TextureLoader();
-        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg');
-    //    var roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
+        const roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
         colorMap.repeat.set(1, 2);
@@ -222,7 +222,7 @@
           map: colorMap,
           transparent: false,
           side: THREE.DoubleSide,
-        //  roughness: colorMap
+          roughness: roughMap
         });
 
         const plane = new THREE.Mesh(geometry, roadMat);
