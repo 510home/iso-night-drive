@@ -212,7 +212,8 @@
         var geometry = new THREE.PlaneGeometry(4, 16);
 
         var loader = new THREE.TextureLoader();
-        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg');
+        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+    //    var roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
         colorMap.repeat.set(1, 2);
@@ -221,7 +222,7 @@
           map: colorMap,
           transparent: false,
           side: THREE.DoubleSide,
-          roughness: 1
+          roughness: colorMap
         });
 
         var mesh = new THREE.Mesh(geometry, material);
