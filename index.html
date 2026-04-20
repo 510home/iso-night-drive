@@ -209,10 +209,10 @@
       }
 
       function addObjects(scene) {
-        var geometry = new THREE.PlaneGeometry(16, 4);
+        var geometry = new THREE.PlaneGeometry(3, 16);
 
         const loader = new THREE.TextureLoader();
-        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg');
     //    var roughMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
