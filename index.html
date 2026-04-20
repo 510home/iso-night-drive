@@ -222,7 +222,7 @@
           map: colorMap,
           transparent: false,
           side: THREE.DoubleSide,
-          roughness: roughMap
+      //    roughness: roughMap
         });
 
         const plane = new THREE.Mesh(geometry, roadMat);
@@ -243,7 +243,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        plane.roadMat.map.offset.y = time * -0.0085;
+    //    plane.roadMat.map.offset.y = time * -0.0085;
 
         applyWASD();
         controls.update();   // required for damping
