@@ -286,7 +286,7 @@
         var geometry = new THREE.PlaneGeometry(12, 12);
 
         var loader = new THREE.TextureLoader();
-        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/redspeed.jpg');
+        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
         colorMap.repeat.set(1, 1);
@@ -316,7 +316,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        mesh.material.map.offset.y = time * 0.0015;
+        mesh.material.map.offset.y = time * -0.0075;
 
         applyWASD();
         controls.update();   // required for damping
