@@ -166,10 +166,24 @@
   scene.background = new THREE.Color(0x0a0c0f);
   scene.fog = new THREE.Fog(0x232a3b, 12, 22);
 
+        const texloader = new THREE.TextureLoader();
+        const colorMap = texloader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+    //  var roughMap = texloader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/bwspeed.jpg');
+        colorMap.wrapS = THREE.RepeatWrapping;
+        colorMap.wrapT = THREE.RepeatWrapping;
+        colorMap.repeat.set(1, 2);
+
+        var roadMat = new THREE.MeshStandardMaterial({
+          map: colorMap,
+          transparent: false,
+          side: THREE.DoubleSide,
+  //        roughness: colorMap
+        });
+  
   /* ── plane ── */
   const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(16, 3),
-    new THREE.MeshStandardMaterial({ color: 0x485565, roughness: 0.88, metalness: 0.05 })
+    roadMat)
   );
   plane.rotation.x = -Math.PI / 2 ;
   plane.receiveShadow = true;
@@ -294,6 +308,7 @@
   function animate() {
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
+   plane.roadMat.map.offset.y = time * -0.0055;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
