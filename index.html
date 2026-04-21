@@ -313,7 +313,7 @@
     (xhr) => {
       if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
     },
-    (err) => console.error('GLTF load error:', err)
+ //   (err) => console.error('GLTF load error:', err)
   );
   
 */
@@ -333,17 +333,16 @@
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
            (gltf) => {
      const wheelBack = gltf.scene;
-      wheelBack.position.set(-0.72, 0.2, -0.525);
+      wheelBack.position.set(-.72, 0.2, -0.525);
  //     wheelBack.rotation.set(0,0,0);
-      scene.add(wheelBack);
-      
+//      scene.add(wheelBack);
     });
 
   
-  /* ── camera + orbit controls ── */
+  // ── camera + orbit controls ── 
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(4, 4, 4);
-  camera.lookAt(0, 0, 0);
+  camera.lookAt(0, 0.2, 0);
   
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
