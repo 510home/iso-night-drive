@@ -26,7 +26,7 @@
     }
 
     #canvas-container { position: fixed; inset: 0; }
-    canvas { display: block; }
+     { display: block; }
 
     #hud {
       position: fixed; inset: 0;
@@ -165,7 +165,8 @@
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a0c0f);
   scene.fog = new THREE.Fog(0x232a3b, 12, 22);
-
+  // MESH VARIABLE _____---------
+  const mesh = addObjects(scene);
   /* ── plane ── */
   const plane = new THREE.Mesh(
     new THREE.PlaneGeometry(16, 3),
@@ -175,6 +176,31 @@
   plane.receiveShadow = true;
   scene.add(plane);
 
+  // STREET WITH TEXTURE ──────────────────────────────
+ // ── PLANE STREET TEXTURE ──────────────────────────────────────────
+      function addObjects(scene) {
+        const geometry = new THREE.PlaneGeometry(4, 48);
+
+        const loader = new THREE.TextureLoader();
+        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
+        colorMap.wrapS = THREE.RepeatWrapping;
+        colorMap.wrapT = THREE.RepeatWrapping;
+        colorMap.repeat.set(1, 1);
+
+        const materialll = new THREE.MeshStandardMaterial({
+          map: colorMap,
+          transparent: false,
+          side: THREE.DoubleSide,
+          roughness: 1
+        });
+ 
+       var street = new THREE.Mesh(geometry, materialll);
+        street.rotation.x = -Math.PI / 2;
+        scene.add(street);
+        return street;
+      }
+      
+  
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
@@ -295,6 +321,8 @@
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
 
+mesh.material.map.offset.y = time * -0.0075;
+    
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
       lancer.rotation.x = 0 + getWobble((elapsed % 3) / 3);
