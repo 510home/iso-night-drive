@@ -177,9 +177,9 @@
 //  scene.add(plane);
 
   // STREET WITH TEXTURE ──────────────────────────────
- // ── PLANE STREET TEXTURE ──────────────────────────────────────────
+
       function addObjects(scene) {
-        const geometry = new THREE.PlaneGeometry(48, 4);
+        const geometry = new THREE.PlaneGeometry(48, 3);
 
         const loader = new THREE.TextureLoader();
         const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg');
@@ -320,8 +320,9 @@
   function animate() {
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
+    
 
-//mesh.material.map.offset.y = time * -0.0075;
+mesh.material.map.offset.y = elapsed * -0.0075;
     
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
