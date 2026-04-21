@@ -124,11 +124,6 @@
   </style>
 </head>
 <body>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
   
 <div id="canvas-container"></div>
 <div id="vignette"></div>
@@ -150,7 +145,11 @@
 
 <div id="xr-not-supported">WebXR not available on this device/browser.</div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+  
 <script>
 (function () {
 
@@ -319,7 +318,7 @@
      (gltf) => {
      const wheelFront = gltf.scene;
       wheelFront.position.set(.985, 0.2, -0.525);
-      scene.add(wheelFront);
+//      scene.add(wheelFront);
      });
 
 // Model 3 - Back Wheel
