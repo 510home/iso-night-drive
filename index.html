@@ -283,8 +283,8 @@ const fragmentShader = /* glsl */`
       if (wheelBack)  wheelBack.rotation.z  = t * Math.PI * 2 * 24;
 
       const yOffset = (t * 4.0) % 1.0;
-      streetMat.uniforms.uOffset.value = yOffset;
-  //    if (streetmap) streetmap.offset.x = (t * 12.0) % 1.0;
+  //    streetMat.uniforms.uOffset.value = yOffset;
+     if (streetmap) streetmap.offset.x = (t * 12.0) % 1.0;
       controls.update();
       renderer.render(scene, camera);
     }
