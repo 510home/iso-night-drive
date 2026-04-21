@@ -424,14 +424,14 @@
   );
 
       // Model 2 – Front Wheel
-    const wheelFront = load(
+    const wheelFront = gltfloader.load(
       'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
        .985, 0.2, -0.525
     ).catch(console.error);
       scene.add(wheelFront);
 
     // Model 3 - Back Wheel
-    const wheelBack = load(
+    const wheelBack = gltfloader.load(
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
       -0.72, 0.2, -0.525
     ).catch(console.error);
