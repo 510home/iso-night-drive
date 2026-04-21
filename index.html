@@ -389,14 +389,18 @@
       'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
        .985, 0.2, -0.525
     ).catch(console.error);
+      scene.add(wheelFront);
 
     // Model 3 - Back Wheel
     const wheelBack = load(
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
       -0.72, 0.2, -0.525
     ).catch(console.error);
+      scene.add(wheelBack);
+      
 //      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
 
+      
       // Compute bounding box BEFORE any transforms
       const box    = new THREE.Box3().setFromObject(model);
       const size   = box.getSize(new THREE.Vector3());
