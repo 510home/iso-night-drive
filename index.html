@@ -315,7 +315,7 @@ var time = 0;
     for (let i = 0; i < KEYS.length - 1; i++) {
       const k0 = KEYS[i], k1 = KEYS[i+1];
       if (ct >= k0.t && ct <= k1.t) {
-        return easeInOut(k0.v, k1.v, (ct - k0.t) / (k1.t - k0.t));
+      return easeInOut(k0.v, k1.v, (ct - k0.t) / (k1.t - k0.t));
       }
     }
     return 0;
@@ -325,8 +325,7 @@ var time = 0;
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
     
-
-  mesh.material.map.offset.x = dt * -0.075;
+  mesh.material.map.offset.x = dt * -0.5;
     
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
