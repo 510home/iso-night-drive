@@ -312,13 +312,14 @@
     (err) => console.error('GLTF load error:', err)
   );
 
+  /*
  // Model 2 – Front Wheel
      gltfLoader.load(
      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb', 
      (gltf) => {
      const wheelFront = gltf.scene;
       wheelFront.position.set(.985, 0.2, -0.525);
-//      scene.add(wheelFront);
+      scene.add(wheelFront);
      });
 
 // Model 3 - Back Wheel
@@ -331,7 +332,7 @@
     
   //    scene.add(wheelBack);
   
-
+*/
   
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
