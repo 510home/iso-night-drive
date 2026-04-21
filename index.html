@@ -161,6 +161,8 @@
   renderer.xr.enabled = true;
   document.getElementById('canvas-container').appendChild(renderer.domElement);
 
+var time = 0;
+  
   /* ── scene ── */
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a0c0f);
@@ -322,7 +324,7 @@
     const elapsed = clock.elapsedTime;
     
 
-mesh.material.map.offset.y = elapsed * -0.0075;
+mesh.material.map.offset.y = time * -0.0075;
     
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
