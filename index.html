@@ -383,20 +383,6 @@
     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
     (gltf) => {
       const model = gltf.scene;
-
-    // Model 2 – Front Wheel
-    const wheelFront = load(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
-       .985, 0.2, -0.525
-    ).catch(console.error);
-      scene.add(wheelFront);
-
-    // Model 3 - Back Wheel
-    const wheelBack = load(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
-      -0.72, 0.2, -0.525
-    ).catch(console.error);
-      scene.add(wheelBack);
       
 //      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
 
@@ -436,6 +422,21 @@
     },
     (err) => console.error('GLTF load error:', err)
   );
+
+      // Model 2 – Front Wheel
+    const wheelFront = load(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
+       .985, 0.2, -0.525
+    ).catch(console.error);
+      scene.add(wheelFront);
+
+    // Model 3 - Back Wheel
+    const wheelBack = load(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
+      -0.72, 0.2, -0.525
+    ).catch(console.error);
+      scene.add(wheelBack);
+  
 })(); 
 
 </script>
