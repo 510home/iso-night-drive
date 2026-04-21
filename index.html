@@ -389,7 +389,7 @@
   function animate() {
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
-   if (wheelFront) wheelFront.rotation.z = elapsed * Math.PI * 2 * 24;
+    wheelFront.rotation.z = elapsed * Math.PI * 2 * 24;
 //    if (wheelBack)  wheelBack.rotation.z  = elapsed * Math.PI * 2 * 24;
     mesh.material.map.offset.x = elapsed * -1.65;
     
