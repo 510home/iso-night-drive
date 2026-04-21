@@ -198,7 +198,8 @@ var time = 0;
  
        var street = new THREE.Mesh(geometry, materialll);
         street.rotation.x = -Math.PI / 2;
-        street.zPos.set = 1;
+        street.position.z = 0.5;
+        street.position.y = 0.02;
         scene.add(street);
         return street;
       }
