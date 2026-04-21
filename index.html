@@ -148,7 +148,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+//<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 <script>
 (function () {
 
@@ -160,8 +160,6 @@
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.xr.enabled = true;
   document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-//var time = 0;
   
   /* ── scene ── */
   const scene = new THREE.Scene();
@@ -210,12 +208,8 @@
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
   gridMain.position.y = 0.002;
   scene.add(gridMain);
-  const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
-  gridZ.position.y = 0.003;
-  scene.add(gridZ);
 
-
-  /* ── cylinder ── */
+  /* ── lamp cylinder ── */
   const cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
@@ -280,10 +274,7 @@
     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
     (gltf) => {
       const model = gltf.scene;
-      
-//      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
-
-      
+  
       // Compute bounding box BEFORE any transforms
       const box    = new THREE.Box3().setFromObject(model);
       const size   = box.getSize(new THREE.Vector3());
@@ -321,17 +312,22 @@
   );
 
  // Model 2 – Front Wheel
-    const wheelFront = gltfloader.load(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
-       .985, 0.2, -0.525
-    ).catch(console.error);
+     gltfloader.load(
+     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb', 
+     (gltf) => {
+     const wheelFront = gltf.scene;
+      wheelFront.position.set(.985, 0.2, -0.525);
       scene.add(wheelFront);
+  ).catch(console.error);
 
 // Model 3 - Back Wheel
-    const wheelBack = gltfloader.load(
+    gltfloader.load(
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
       -0.72, 0.2, -0.525
     ).catch(console.error);
+
+  const wheelBack =  gltf.scene;
+    
       scene.add(wheelBack);
   
 
