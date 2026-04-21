@@ -331,12 +331,13 @@
 // Model 3 - Back Wheel
     gltfLoader.load(
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
-      -0.72, 0.2, -0.525
+           (gltf) => {
+     const wheelBack = gltf.scene;
+      wheelBack.position.set(-0.72, 0.2, -0.525);
+ //     wheelBack.rotation.set(0,0,0);
+      scene.add(wheelBack);
+      
     );
-
-//  const wheelBack =  gltf.scene;
-    
-  //    scene.add(wheelBack);
 
   
   /* ── camera + orbit controls ── */
@@ -390,7 +391,7 @@
   function animate() {
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
-    wheelFront.rotation.z = elapsed * Math.PI * 2 * 18;
+// if wheelFront.rotation.z = elapsed * Math.PI * 2 * 18;
 //    if (wheelBack)  wheelBack.rotation.z  = elapsed * Math.PI * 2 * 24;
     mesh.material.map.offset.x = elapsed * -1.65;
     
