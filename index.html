@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scene · WebXR</title>
+  <title>Night Drive</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700&display=swap');
 
@@ -274,6 +274,68 @@
   cylinder.add(cylSpot);
   cylinder.add(cylSpot.target);
 
+/* ── GLTF: Lancer ── */
+  const gltfLoader = new THREE.GLTFLoader();
+  gltfLoader.load(
+    'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      
+//      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
+
+      
+      // Compute bounding box BEFORE any transforms
+      const box    = new THREE.Box3().setFromObject(model);
+      const size   = box.getSize(new THREE.Vector3());
+      const centre = box.getCenter(new THREE.Vector3());
+
+      // Scale to fit within 2m
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
+      model.scale.setScalar(scale);
+
+      // Centre at origin, then lift to sit on the plane
+      model.position.set(
+        -centre.x * scale,
+        -centre.y * scale + (size.y * scale / 2.125),
+        -centre.z * scale -.2
+      );
+   
+      model.traverse(o => {
+        if (o.isMesh) {
+          o.castShadow    = true;
+          o.receiveShadow = true;
+          // Ensure materials are double-sided in case normals are flipped
+     //     if (o.material) o.material.side = THREE.DoubleSide;
+        }
+      });
+
+      scene.add(model);
+      lancer = model;
+      console.log('Lancer loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
+    },
+    (xhr) => {
+      if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
+    },
+    (err) => console.error('GLTF load error:', err)
+  );
+
+ // Model 2 – Front Wheel
+    const wheelFront = gltfloader.load(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
+       .985, 0.2, -0.525
+    ).catch(console.error);
+      scene.add(wheelFront);
+
+// Model 3 - Back Wheel
+    const wheelBack = gltfloader.load(
+      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
+      -0.72, 0.2, -0.525
+    ).catch(console.error);
+      scene.add(wheelBack);
+  
+
+  
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(4, 4, 4);
@@ -374,68 +436,6 @@
 
   xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
   if (!('xr' in navigator)) { xrBtn.disabled = true; }
-
-
-  
-/* ── GLTF: Lancer ── */
-  const gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.load(
-    'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
-    (gltf) => {
-      const model = gltf.scene;
-      
-//      model.rotation.set(new THREE.Vector3((Math.PI / 2), 0, 0));
-
-      
-      // Compute bounding box BEFORE any transforms
-      const box    = new THREE.Box3().setFromObject(model);
-      const size   = box.getSize(new THREE.Vector3());
-      const centre = box.getCenter(new THREE.Vector3());
-
-      // Scale to fit within 2m
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      model.scale.setScalar(scale);
-
-      // Centre at origin, then lift to sit on the plane
-      model.position.set(
-        -centre.x * scale,
-        -centre.y * scale + (size.y * scale / 2.125),
-        -centre.z * scale -.2
-      );
-   
-      model.traverse(o => {
-        if (o.isMesh) {
-          o.castShadow    = true;
-          o.receiveShadow = true;
-          // Ensure materials are double-sided in case normals are flipped
-     //     if (o.material) o.material.side = THREE.DoubleSide;
-        }
-      });
-
-      scene.add(model);
-      lancer = model;
-      console.log('Lancer loaded. Scale:', scale, 'Size:', size, 'Position:', model.position);
-    },
-    (xhr) => {
-      if (xhr.total) console.log('GLTF loading:', Math.round(xhr.loaded / xhr.total * 100) + '%');
-    },
-    (err) => console.error('GLTF load error:', err)
-  );
-
-      // Model 2 – Front Wheel
-    const wheelFront = gltfloader.load(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
-       .985, 0.2, -0.525
-    ).catch(console.error);
-      scene.add(wheelFront);
-
-    // Model 3 - Back Wheel
-    const wheelBack = gltfloader.load(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
-      -0.72, 0.2, -0.525
-    ).catch(console.error);
-      scene.add(wheelBack);
   
 })(); 
 
