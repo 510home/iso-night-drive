@@ -374,48 +374,6 @@
   xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
   if (!('xr' in navigator)) { xrBtn.disabled = true; }
 
-// ALT GLTF Loader -__---____----- ___-_
-
-    function loadModel(url, x, y, z) {
-      return new Promise((resolve, reject) => {
-        loader.load(
-          url,
-          (gltf) => {
-            const model = gltf.scene;
-            model.position.set(x, y, z);
-            // enable shadows on every mesh
-            model.traverse((child) => {
-              if (child.isMesh) {
-                child.castShadow    = true;
-                child.receiveShadow = true;
-              }
-            });
-            scene.add(model);
-            resolve(model);
-          },
-          undefined,
-          reject
-        );
-      });
-    }
-
-    // Model 1 – car body (single instance)
-    loadModel(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_1x_nowheels.glb',
-      -0.07, 0.07, -0.55
-    ).catch(console.error);
-
-    // Model 2 – Front Wheel
-    const wheelFront = await loadModel(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
-       .985, 0.2, -0.525
-    ).catch(console.error);
-
-    // Model 3 - Back Wheel
-    const wheelBack = await loadModel(
-      'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
-      -0.72, 0.2, -0.525
-    ).catch(console.error);
 
   
 /* ── GLTF: Lancer ── */
