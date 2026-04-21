@@ -283,10 +283,10 @@
       }
  // ── PLANE STREET TEXTURE ──────────────────────────────────────────
       function addObjects(scene) {
-        var geometry = new THREE.PlaneGeometry(4, 18);
+        const geometry = new THREE.PlaneGeometry(4, 48);
 
-        var loader = new THREE.TextureLoader();
-        var colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
+        const loader = new THREE.TextureLoader();
+        const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
         colorMap.repeat.set(1, 1);
@@ -298,12 +298,13 @@
           roughness: 1
         });
  
-       var mesh = new THREE.Mesh(geometry, materialll);
-        mesh.rotation.x = -Math.PI / 2;
-        scene.add(mesh);
-        return mesh;
+       var street = new THREE.Mesh(geometry, materialll);
+        street.rotation.x = -Math.PI / 2;
+        scene.add(street);
+        return street;
       }
-
+      
+ // ── SPHERE ────────────
       function addSphere(scene) {
         var geometry = new THREE.SphereGeometry(2, 64, 64);
         var ballmat = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
@@ -316,7 +317,7 @@
       this.update = function () {
         time++;
         light.position.x = Math.sin(time * 0.01) * 200;
-        mesh.material.map.offset.y = time * -0.0075;
+        street.material.map.offset.y = time * -0.0075;
 
         applyWASD();
         controls.update();   // required for damping
