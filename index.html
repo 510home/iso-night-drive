@@ -269,10 +269,12 @@
   cylinder.add(cylSpot);
   cylinder.add(cylSpot.target);
 
- /*
-  
+
 // ── GLTF: Lancer ── 
   const gltfLoader = new THREE.GLTFLoader();
+
+   /*
+  
   gltfLoader.load(
     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
     (gltf) => {
@@ -313,7 +315,8 @@
     },
     (err) => console.error('GLTF load error:', err)
   );
-
+  
+*/
  
  // Model 2 – Front Wheel
      gltfLoader.load(
@@ -330,11 +333,10 @@
       -0.72, 0.2, -0.525
     );
 
-  const wheelBack =  gltf.scene;
+//  const wheelBack =  gltf.scene;
     
   //    scene.add(wheelBack);
-  
-*/
+
   
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
