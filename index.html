@@ -200,6 +200,7 @@
         street.rotation.x = -Math.PI / 2;
         street.position.z = 0.5;
         street.position.y = 0.02;
+        street.scale.z = 0.75;
         scene.add(street);
         return street;
       }
@@ -325,7 +326,7 @@
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
     
-  mesh.material.map.offset.z = dt * -0.05;
+  mesh.material.map.offset.z = dt * -0.75;
     
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
