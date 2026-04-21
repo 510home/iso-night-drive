@@ -187,7 +187,7 @@
         const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01x.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
         colorMap.wrapT = THREE.RepeatWrapping;
-        colorMap.repeat.set(1, 1);
+        colorMap.repeat.set(2, 1);
 
         const materialll = new THREE.MeshStandardMaterial({
           map: colorMap,
@@ -326,7 +326,7 @@
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
     
-  mesh.material.map.offset.x = elapsed * -0.75;
+  mesh.material.map.offset.x = elapsed * -2;
     
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
