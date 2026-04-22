@@ -273,8 +273,6 @@
 // ── GLTF: Lancer ── 
   const gltfLoader = new THREE.GLTFLoader();
 
-   /*
-  
   gltfLoader.load(
     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
     (gltf) => {
@@ -316,7 +314,7 @@
  //   (err) => console.error('GLTF load error:', err)
   );
   
-*/
+
  
  // Model 2 – Front Wheel
      gltfLoader.load(
@@ -440,7 +438,7 @@
   xrBtn.addEventListener('click', () => { if (xrSession) exitXR(); else enterXR(); });
   if (!('xr' in navigator)) { xrBtn.disabled = true; }
   
-// })(); 
+ })(); 
 
 </script>
 </body>
