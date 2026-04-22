@@ -355,10 +355,11 @@
       const centre = box.getCenter(new THREE.Vector3());
 
       // Scale to fit within 2m
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
-      model.scale.setScalar(scale);
+ //     const maxDim = Math.max(size.x, size.y, size.z);
+//      const scale  = maxDim > 0 ? (2 / maxDim) : 1;
+  //    model.scale.setScalar(scale);
 
+      model.scale.set(1.35, 1.35, 1.35);
       // Centre at origin, then lift to sit on the plane
       model.position.set(
         -centre.x * scale,
