@@ -228,7 +228,8 @@ const fragmentShader = /* glsl */`
           url,
           (gltf) => {
             const model = gltf.scene;
-            model.position.set(x, y, z);
+            model.position.set(x, y, z);  
+            model.scale.set(x, y, z);
             // enable shadows on every mesh
             model.traverse((child) => {
               if (child.isMesh) {
@@ -248,7 +249,7 @@ const fragmentShader = /* glsl */`
     // Model 1 – car body (single instance)
     loadModel(
       'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
-      -0.07, 0, -0.55
+      (-0.07, 0, -0.55), (a.35, a.35, a.35)
     ).catch(console.error);
     
 
