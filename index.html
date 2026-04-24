@@ -228,7 +228,8 @@ const fragmentShader = /* glsl */`
           url,
           (gltf) => {
             const model = gltf.scene;
-            model.position.set(x, y, z);  
+            model.position.set(x, y, z);
+            model.scale.set(2, 2, 2);
             // enable shadows on every mesh
             model.traverse((child) => {
               if (child.isMesh) {
