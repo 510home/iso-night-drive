@@ -151,24 +151,6 @@ const fragmentShader = /* glsl */`
     gl_FragColor = vec4(lit, 1.0);
   }
 `;
-
-/*
-
-    // ── Ground Plane  (16 m wide × 3 m long) ─────────────────────────────────
-    const groundGeo = new THREE.PlaneGeometry(16, 3);
-    const planeMat = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms: {
-      uOffset: { value: 0.0 }
-    },
-    side: THREE.DoubleSide
-    });
-    const ground = new THREE.Mesh(groundGeo, planeMat);
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
-*/
     // ── Ground Plane 02 (16 m wide × 4 m long) ─────────────────────────────────
 
     const texPLane = new THREE.PlaneGeometry(16, 4);
@@ -229,7 +211,7 @@ const fragmentShader = /* glsl */`
           (gltf) => {
             const model = gltf.scene;
             model.position.set(x, y, z);
-            model.scale.set(2, 2, 2);
+            model.scale.set(x, y, z);
             // enable shadows on every mesh
             model.traverse((child) => {
               if (child.isMesh) {
@@ -249,21 +231,21 @@ const fragmentShader = /* glsl */`
     // Model 1 – car body (single instance)
     loadModel(
       'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
-      -0.07, 0, -0.55
+      -0.07, 0, -0.55, 2, 2, 2
     ).catch(console.error);
     
 
     // Model 2 – Front Wheel
     const wheelFront = await loadModel(
       'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
-       .985, 0.2, -0.525
+       .985, 0.2, -0.525, 1, 1, 1
     ).catch(console.error);
     scene.add(wheelFront);
 
     // Model 3 - Back Wheel
     const wheelBack = await loadModel(
       'https://raw.githubusercontent.com/510home/iso-night-drive/master/models/wheels_1x_02.glb',
-      -0.72, 0.2, -0.525
+      -0.72, 0.2, -0.525, 1, 1, 1
     ).catch(console.error);
     scene.add(wheelBack);
 
