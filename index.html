@@ -202,7 +202,7 @@
       var height = canvas.height;
 
       var scene = new THREE.Scene();
-      scene.background = new THREE.Color("#002244");
+      scene.background = new THREE.Color("#004422");
 
       var light = buildLights(scene);
       var camera = buildCamera(width, height);
@@ -284,7 +284,6 @@
  // ── PLANE STREET TEXTURE ──────────────────────────────────────────
       function addObjects(scene) {
         const geometry = new THREE.PlaneGeometry(4, 48);
-
         const loader = new THREE.TextureLoader();
         const colorMap = loader.load('https://raw.githubusercontent.com/510home/iso-night-drive/main/tex/asphalt01xPortrait.jpg');
         colorMap.wrapS = THREE.RepeatWrapping;
@@ -303,16 +302,7 @@
         scene.add(street);
         return street;
       }
-      
- // ── SPHERE ────────────
-      function addSphere(scene) {
-        var geometry = new THREE.SphereGeometry(2, 64, 64);
-        var ballmat = new THREE.MeshStandardMaterial({ color: "#1a6fd4", roughness: 0.3, metalness: 0.2 });
-        var sphere = new THREE.Mesh(geometry, ballmat);
-        sphere.position.set(0, -3, 0);
-        scene.add(sphere);
-        return sphere;
-      }
+
 
       this.update = function () {
         time++;
