@@ -390,7 +390,7 @@ gltfLoader.load(
     mesh.material.map.offset.x = chron * 0.00375;
     // Null guards will cleanly skip rotation until the models are ready
     if (wheelsBack) wheelsBack.rotation.z -= 0.004 * dt;
-    wheelsFront.rotation.z -= 0.004 * dt;
+    if (wheelsFront) wheelsFront.rotation.z -= 0.004 * dt;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
