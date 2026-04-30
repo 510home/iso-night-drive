@@ -255,6 +255,20 @@ meshLoader.load(
   capCube.receiveShadow = false;
   cylinder.add(capCube);
 
+    /* ── cylinder spotlight (parented) ── */
+  const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
+  cylSpot.position.set(0, 0.775, 1);
+  cylSpot.angle    = 55 * (Math.PI / 180);
+  cylSpot.penumbra = 0.75;
+  cylSpot.decay    = 1.5;
+  cylSpot.distance = 8;
+  cylSpot.castShadow = true;
+  cylSpot.shadow.mapSize.width = cylSpot.shadow.mapSize.height = 1024;
+  cylSpot.shadow.camera.near = 0.1;
+  cylSpot.shadow.camera.far  = 10;
+  cylSpot.target.position.set(0, -0.775, 0.775 * Math.tan(45 * Math.PI / 180));
+  cylinder.add(cylSpot);
+  cylinder.add(cylSpot.target);
   
   /* ── spotlights ── */
   function makeSpot(color, intensity, x, y, z, tx, ty, tz) {
@@ -331,9 +345,9 @@ meshLoader.load(
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
     chron++;
-    mesh.material.map.offset.x = chron * -0.00175;
-    // wheelsBack.rotation.z -= 0.04 * deltaTime;
-   // wheelsFront.rotation.z -= 0.04 * deltaTime;
+    mesh.material.map.offset.x = chron * 0.00375;
+    wheelsBack.rotation.z -= 0.04 * deltaTime;
+    wheelsFront.rotation.z -= 0.04 * deltaTime;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
