@@ -257,7 +257,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsFront = gltf.scene;
     wheelsFront.scale.set(.7, .7, .7);
-    wheelsFront.position.set(0.7, 0.1, -0.25);
+    wheelsFront.position.set(0.7, 0.1, 0.25);
     wheelsFront.rotation.z = 0;
    scene.add(wheelsFront);
   }
@@ -269,7 +269,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsBack = gltf.scene;
     wheelsBack.scale.set(.7, .7, .7);
-    wheelsBack.position.set(-0.52, 0.1, -0.25);
+    wheelsBack.position.set(-0.52, 0.15, 0.35);
     wheelsBack.rotation.z = 0;
     scene.add(wheelsBack);
   }
@@ -277,7 +277,7 @@ gltfLoader.load(
 
 /* ── LAMP POST ── */
   const cylinder = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
+    new THREE.CylinderGeometry(0.04, 0.15, 2.5, 32),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
   );
   cylinder.position.set(6, 1.115, -1.28);
@@ -390,7 +390,7 @@ gltfLoader.load(
     mesh.material.map.offset.x = chron * 0.00375;
     // Null guards will cleanly skip rotation until the models are ready
     if (wheelsBack) wheelsBack.rotation.z -= 0.004 * dt;
-    if (wheelsFront) wheelsFront.rotation.z -= 0.004 * dt;
+    wheelsFront.rotation.z -= 0.004 * dt;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
