@@ -205,6 +205,7 @@ let mesh = addRoad(scene);
   gridZ.position.y = 0.003;
   scene.add(gridZ);
 
+  /*
   // FRONT WHEELS
   let wheelsFront;
 meshLoader.load(
@@ -214,7 +215,7 @@ meshLoader.load(
     wheelsFront.scale.set(1, 1, 1);
     wheelsFront.position.set(0.985, 0.2, -0.525);
     wheelsFront.rotation.z = 0;
-//    scene.add(wheelsFront);
+   scene.add(wheelsFront);
   }
 );
 // BACK WHEELS
@@ -226,11 +227,13 @@ meshLoader.load(
     wheelsBack.scale.set(.97, .97, .97);
     wheelsBack.position.set(-0.72, 0.2, -0.525);
     wheelsBack.rotation.z = 0;
- //   scene.add(wheelsBack);
+    scene.add(wheelsBack);
   }
 );
 
-  /* ── cylinder ── */
+*/
+  
+/* ── LAMP POST ── */
   const cylinder = new THREE.Mesh(
     new THREE.CylinderGeometry(0.04, 0.1, 2.5, 32),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
@@ -241,7 +244,7 @@ meshLoader.load(
   cylinder.receiveShadow = false;
   scene.add(cylinder);
 
-  /* ── cap cube (parented to cylinder) ── */
+  /* ── LAMP cap cube (parented to cylinder) ── */
   const capCube = new THREE.Mesh(
     new THREE.BoxGeometry(0.22, 0.05, 0.5),
     new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.8, metalness: 0.05 })
@@ -252,6 +255,7 @@ meshLoader.load(
   capCube.receiveShadow = false;
   cylinder.add(capCube);
 
+  
   /* ── spotlights ── */
   function makeSpot(color, intensity, x, y, z, tx, ty, tz) {
     const s = new THREE.SpotLight(color, intensity);
@@ -274,20 +278,6 @@ meshLoader.load(
   spot1.castShadow = false;
   makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
 
-  /* ── cylinder spotlight (parented) ── */
-  const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
-  cylSpot.position.set(0, 0.775, 1);
-  cylSpot.angle    = 55 * (Math.PI / 180);
-  cylSpot.penumbra = 0.75;
-  cylSpot.decay    = 1.5;
-  cylSpot.distance = 8;
-  cylSpot.castShadow = true;
-  cylSpot.shadow.mapSize.width = cylSpot.shadow.mapSize.height = 1024;
-  cylSpot.shadow.camera.near = 0.1;
-  cylSpot.shadow.camera.far  = 10;
-  cylSpot.target.position.set(0, -0.775, 0.775 * Math.tan(45 * Math.PI / 180));
-  cylinder.add(cylSpot);
-  cylinder.add(cylSpot.target);
 
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
