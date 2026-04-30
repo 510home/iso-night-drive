@@ -205,6 +205,30 @@ let mesh = addRoad(scene);
   gridZ.position.y = 0.003;
   scene.add(gridZ);
 
+  // FRONT WHEELS
+  let wheelsFront;
+meshLoader.load(
+  'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
+  (gltf) => {
+    wheelsFront = gltf.scene;
+    wheelsFront.scale.set(1, 1, 1);
+    wheelsFront.position.set(0.985, 0.2, -0.525);
+    wheelsFront.rotation.z = 0;
+//    scene.add(wheelsFront);
+  }
+);
+// BACK WHEELS
+var wheelsBack;
+meshLoader.load(
+  'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
+  (gltf) => {
+    wheelsBack = gltf.scene;
+    wheelsBack.scale.set(.97, .97, .97);
+    wheelsBack.position.set(-0.72, 0.2, -0.525);
+    wheelsBack.rotation.z = 0;
+ //   scene.add(wheelsBack);
+  }
+);
 
   /* ── cylinder ── */
   const cylinder = new THREE.Mesh(
@@ -285,7 +309,7 @@ let mesh = addRoad(scene);
     camera.updateProjectionMatrix();
   });
 
-  /* ── animation ── */
+  /* ── Clock for Wobble ── */
   const clock  = new THREE.Clock();
   const DEG    = Math.PI / 180;
   let lancer = null;
@@ -318,6 +342,8 @@ let mesh = addRoad(scene);
     const elapsed = clock.elapsedTime;
     chron++;
     mesh.material.map.offset.x = chron * -0.0075;
+    // wheelsBack.rotation.z -= 0.04 * deltaTime;
+   // wheelsFront.rotation.z -= 0.04 * deltaTime;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
