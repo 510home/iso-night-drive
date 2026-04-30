@@ -184,11 +184,11 @@ let chron = 0;
   
   /* ── plane ── */
   const texPlane = new THREE.Mesh(
-    new THREE.PlaneGeometry(16, 3), roadMat);
-  plane.rotation.x = -Math.PI / 2;
-  plane.receiveShadow = true;
-  scene.add(plane);
-  return plane;
+  new THREE.PlaneGeometry(16, 3), roadMat);
+  texPlane.rotation.x = -Math.PI / 2;
+  texPlane.receiveShadow = true;
+  scene.add(texPlane);
+  return texPlane;
 
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
@@ -310,7 +310,7 @@ let chron = 0;
     const dt      = clock.getDelta();
     const elapsed = clock.elapsedTime;
     chron++;
-    plane.material.map.offset.y = chron * -0.0055;
+    texPlane.material.map.offset.y = chron * -0.0055;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
