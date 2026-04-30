@@ -390,8 +390,8 @@ gltfLoader.load(
     const elapsed = clock.elapsedTime;
     chron++;
     mesh.material.map.offset.x = chron * 0.00375;
- //   wheelsBack.rotation.z -= 0.04 * deltaTime;
-//    wheelsFront.rotation.z -= 0.04 * deltaTime;
+    wheelsBack.rotation.z -= 0.04 * deltaTime;
+    wheelsFront.rotation.z -= 0.04 * deltaTime;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
