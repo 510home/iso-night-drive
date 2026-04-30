@@ -256,8 +256,8 @@ gltfLoader.load(
   'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
   (gltf) => {
     wheelsFront = gltf.scene;
-    wheelsFront.scale.set(1, 1, 1);
-    wheelsFront.position.set(0.985, 0.2, -0.525);
+    wheelsFront.scale.set(.85, .85, .85);
+    wheelsFront.position.set(0.985, 0.2, -0.325);
     wheelsFront.rotation.z = 0;
    scene.add(wheelsFront);
   }
@@ -389,8 +389,8 @@ gltfLoader.load(
     chron++;
     mesh.material.map.offset.x = chron * 0.00375;
     // Null guards will cleanly skip rotation until the models are ready
-    if (wheelsBack) wheelsBack.rotation.z -= 0.04 * dt;
-    if (wheelsBack) wheelsFront.rotation.z -= 0.04 * dt;
+    if (wheelsBack) wheelsBack.rotation.z -= 0.004 * dt;
+    if (wheelsFront) wheelsFront.rotation.z -= 0.004 * dt;
 
     // Lancer X wobble ±2° on top of base -90°
     if (lancer) {
