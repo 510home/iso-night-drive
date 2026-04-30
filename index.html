@@ -206,9 +206,9 @@ let mesh = addRoad(scene);
   scene.add(gridZ);
 
 
-  // FRONT WHEELS
-  let wheelsFront;
-meshLoader.load(
+// FRONT WHEELS
+let wheelsFront;
+gltfLoader.load(
   'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
   (gltf) => {
     wheelsFront = gltf.scene;
@@ -219,8 +219,8 @@ meshLoader.load(
   }
 );
 // BACK WHEELS
-var wheelsBack;
-meshLoader.load(
+let wheelsBack;
+gltfLoader.load(
   'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/wheels_1x_02.glb',
   (gltf) => {
     wheelsBack = gltf.scene;
