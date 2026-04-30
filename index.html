@@ -205,7 +205,8 @@ let mesh = addRoad(scene);
   gridZ.position.y = 0.003;
   scene.add(gridZ);
 
-
+//  GLTF Loader for meshes
+const gltfLoader = new THREE.GLTFLoader();
 // FRONT WHEELS
 let wheelsFront;
 gltfLoader.load(
@@ -396,7 +397,7 @@ gltfLoader.load(
   if (!('xr' in navigator)) { xrBtn.disabled = true; }
   
 /* ── GLTF: Lancer ── */
-  const gltfLoader = new THREE.GLTFLoader();
+  
   gltfLoader.load(
     'https://raw.githubusercontent.com/510home/iso-night-drive/main/models/lancer_DG_body_A.glb',
     (gltf) => {
