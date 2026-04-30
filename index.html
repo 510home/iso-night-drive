@@ -257,7 +257,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsFront = gltf.scene;
     wheelsFront.scale.set(.7, .7, .7);
-    wheelsFront.position.set(0.985, 0, 0);
+    wheelsFront.position.set(0.785, 0.1, 0.25);
     wheelsFront.rotation.z = 0;
    scene.add(wheelsFront);
   }
@@ -269,7 +269,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsBack = gltf.scene;
     wheelsBack.scale.set(.7, .7, .7);
-    wheelsBack.position.set(-0.72, 0.2, 0);
+    wheelsBack.position.set(-0.62, 0.1, 0.25);
     wheelsBack.rotation.z = 0;
     scene.add(wheelsBack);
   }
