@@ -227,7 +227,7 @@ let mesh = addRoad(scene);
       // Centre at origin, then lift to sit on the plane
       model.position.set(
         -centre.x * scale,
-        -centre.y * scale + (size.y * scale / 1.35),
+        -centre.y * scale + (size.y * scale / 1.75),
         -centre.z * scale -.2
       );
    
@@ -257,7 +257,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsFront = gltf.scene;
     wheelsFront.scale.set(.7, .7, .7);
-    wheelsFront.position.set(0.56, 0.135, -0.13);
+    wheelsFront.position.set(0.58, 0.135, -0.13);
     wheelsFront.rotation.z = 0;
    scene.add(wheelsFront);
   }
@@ -269,7 +269,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsBack = gltf.scene;
     wheelsBack.scale.set(.7, .7, .7);
-    wheelsBack.position.set(-0.475, 0.135, -0.13);
+    wheelsBack.position.set(-0.49, 0.135, -0.13);
     wheelsBack.rotation.z = 0;
     scene.add(wheelsBack);
   }
@@ -337,8 +337,8 @@ gltfLoader.load(
 
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(3, 2, 3);
-  camera.lookAt(0, 0, 0);
+  camera.position.set(2.5, 1.5, 2.5);
+  camera.lookAt(0, 0.25, 0);
   
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
