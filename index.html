@@ -257,7 +257,7 @@ gltfLoader.load(
   (gltf) => {
     wheelsFront = gltf.scene;
     wheelsFront.scale.set(.7, .7, .7);
-    wheelsFront.position.set(0.55, 0.135, -0.175)
+    wheelsFront.position.set(0.585, 0.135, -0.175)
     wheelsFront.rotation.z = 0;
    scene.add(wheelsFront);
   }
@@ -338,7 +338,7 @@ gltfLoader.load(
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(2.2, 1.5, 2.2);
-  camera.lookAt(1, 0.25, 1);
+  camera.lookAt(3, 0.25, 1);
   
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
