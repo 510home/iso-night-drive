@@ -337,8 +337,8 @@ gltfLoader.load(
 
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(2.5, 1.5, 2.5);
-  camera.lookAt(0, 0.25, 0);
+  camera.position.set(2.2, 1.5, 2.2);
+  camera.lookAt(1, 0.25, 1);
   
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
