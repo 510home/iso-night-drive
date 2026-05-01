@@ -162,8 +162,8 @@
   
   /* ── scene ── */
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x080f4e);
-  scene.fog = new THREE.Fog(0x232a3b, 12, 22);
+  scene.background = new THREE.Color(0x070d40);
+  scene.fog = new THREE.Fog(0x232a3b, 4, 12);
 
 // chron setting for street animation
 let chron = 0;
@@ -199,10 +199,10 @@ let mesh = addRoad(scene);
   /* ── grid ── */
   const gridMain = new THREE.GridHelper(100, 100, 0xaa24b2, 0x7824b2);
   gridMain.position.y = 0.002;
-  scene.add(gridMain);
+//  scene.add(gridMain);
   const gridZ = new THREE.GridHelper(36, 36, 0x6b7c3e, 0x247bb2);
   gridZ.position.y = 0.003;
-  scene.add(gridZ);
+//  scene.add(gridZ);
 
 
 /* ── GLTF: Lancer ── */
