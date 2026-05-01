@@ -197,12 +197,12 @@ let mesh = addRoad(scene);
   }
 
   /* ── grid ── */
-  const gridMain = new THREE.GridHelper(12, 8, 0x6b7c3e, 0x3a4a1e);
+  const gridMain = new THREE.GridHelper(100, 8, 0xaa24b2, 0x7824b2);
   gridMain.position.y = 0.002;
   scene.add(gridMain);
-  const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x3a4a1e);
+  const gridZ = new THREE.GridHelper(3, 3, 0x6b7c3e, 0x247bb2);
   gridZ.position.y = 0.003;
-//  scene.add(gridZ);
+  scene.add(gridZ);
 
 
 /* ── GLTF: Lancer ── */
