@@ -226,7 +226,7 @@
 
   const spot1 = makeSpot(0xfff4d0, .5,  1, 5,  3, 0, 0, 0);
   spot1.castShadow = false;
-  makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
+ // makeSpot(0x8ba9f3, 6, 5, 3, 0, -.5, .125, 0);
 
   /* ── cylinder spotlight (parented) ── */
   const cylSpot = new THREE.SpotLight(0xffffff, 4.0);
@@ -245,8 +245,8 @@
 
   /* ── camera + orbit controls ── */
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(4, 4, 4);
-  camera.lookAt(0, 0, 0);
+  camera.position.set(4, 1, 2);
+//  camera.lookAt(0, 0, 0);
   
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
